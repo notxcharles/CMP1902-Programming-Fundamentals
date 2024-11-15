@@ -1,6 +1,8 @@
 import time, sys, random
 import numpy as np
 
+# I couldn't enter debug mode without referencing the folder
+# with open("./AssessmentItem2/dictionary.txt", 'r') as file:
 with open("dictionary.txt", 'r') as file:
     word_file = file.read()
 all_words_list = word_file.split()
@@ -13,6 +15,10 @@ def clean_wordlist(word_list: list[str]) -> list[str]:
     
     return new_word_list
 all_words_list = clean_wordlist(all_words_list)
+
+def clear_console():
+    print(chr(27) + "[2J")
+    return 
 
 class WordleGame:
     GUESSTIME = 30
@@ -38,11 +44,11 @@ def play_game():
         start_time = time.time()
         guess = input("You have 30 seconds to guess a 5 letter word")
         end_time = time.time()
-        print(f"{start_time} | {end_time} | {end_time-start_time}")
         if (end_time-start_time > wordle_game.GUESSTIME):       
             lives_left = lives_left - 1
             print(f"Guess took too long & you've lost a life - {lives_left} remain")
             continue
+        clear_console()
         print(f"{guess}")
     else:
         print(f"No lives left! You lose!")
