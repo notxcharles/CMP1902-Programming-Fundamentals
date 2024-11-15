@@ -38,6 +38,15 @@ def GetDuplicateIntegers(originalElements: list[int], uniqueElements: list[str])
             
     return duplicateIntegers
         
+def GetProductFromList(targetList: list[str]) -> int:
+    product = 1
+    for integer in targetList:
+        product = product * integer
+    return product
+
+def GetRangeFromList(targetList: list[str]) -> int:
+    # Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
+    return targetList[len(targetList)-1] - targetList[0]
 
 def main():
     integerList = []
@@ -50,8 +59,13 @@ def main():
         
     uniqueList = GetUniqueIntegers(integerList)
     duplicateIntegers = GetDuplicateIntegers(integerList, uniqueList)
-    
     print(f"{duplicateIntegers=} | {integerList=} | {uniqueList=}")
+    length = len(uniqueList)
+    product = GetProductFromList(integerList)
+    range = GetRangeFromList(uniqueList)
+    print(f"{product=}, {range=}")
+    
+    
     
     
 main()
