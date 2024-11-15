@@ -29,3 +29,26 @@ class WordleGame:
         return word
     
     
+def play_game():
+    wordle_game = WordleGame(5, 5)
+    print(f"Trying to guess:\n{wordle_game.word}")
+    lives_left = wordle_game.lives_left
+    
+    while lives_left >= 0:
+        start_time = time.time()
+        guess = input("You have 30 seconds to guess a 5 letter word")
+        end_time = time.time()
+        print(f"{start_time} | {end_time} | {end_time-start_time}")
+        if (end_time-start_time > wordle_game.GUESSTIME):       
+            lives_left = lives_left - 1
+            print(f"Guess took too long & you've lost a life - {lives_left} remain")
+            continue
+        print(f"{guess}")
+    else:
+        print(f"No lives left! You lose!")
+
+def main():
+    play_game()
+    return
+
+main()
