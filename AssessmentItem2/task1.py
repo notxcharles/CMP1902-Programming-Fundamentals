@@ -48,6 +48,29 @@ def GetRangeFromList(targetList: list[str]) -> int:
     # Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
     return targetList[len(targetList)-1] - targetList[0]
 
+def GetSumFromList(listOfNumbers: list[float]) -> float:
+    sum = 0
+    for number in listOfNumbers:
+        sum = sum + number
+    return sum
+
+def GetVarianceFromList(listOfNumbers: list[int]) -> float:
+    listLength = len(listOfNumbers)
+    if listLength == 0:
+        return listLength
+    
+    sum = GetSumFromList(listOfNumbers)
+    mean = sum / listLength
+    
+    squaredDifferences = []
+    for number in listOfNumbers:
+        squaredDifference = (number - mean) ** 2
+        squaredDifferences.append(squaredDifference)
+        
+    variance = GetSumFromList(squaredDifferences) 
+    vardiv = variance / listLength
+    return vardiv
+
 def main():
     integerList = []
     while True:
@@ -60,11 +83,12 @@ def main():
     uniqueList = GetUniqueIntegers(integerList)
     duplicateIntegers = GetDuplicateIntegers(integerList, uniqueList)
     print(f"{duplicateIntegers=} | {integerList=} | {uniqueList=}")
+    
     length = len(uniqueList)
     product = GetProductFromList(integerList)
     range = GetRangeFromList(uniqueList)
-    print(f"{product=}, {range=}")
-    
+    variance = GetVarianceFromList(uniqueList)
+    print(f"{variance=}, {length=}, {product=}, {range=}")
     
     
     
