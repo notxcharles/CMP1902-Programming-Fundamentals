@@ -10,10 +10,11 @@ all_words_list = word_file.split()
 def clean_wordlist(word_list: list[str]) -> list[str]:
     new_word_list = []
     for word in word_list:
+        # Some words contain the character ' , so lets ignore those words 
         if ('\'' not in word):
             new_word_list.append(word)
-    
     return new_word_list
+
 all_words_list = clean_wordlist(all_words_list)
 
 def clear_console():
@@ -24,7 +25,8 @@ class WordleGame:
     GUESSTIME = 30
     def __init__(self, lives = 5, word_length = 5):
         self.lives_left = lives
-        self.word = self.choose_xletter_word(all_words_list, word_length)
+        self.word = self.choose_xletter_word(all_words_list, word_length).lower()
+        self.word_length = word_length
         
     def choose_xletter_word(self, list_of_words: list[str], word_length: int) -> list[str]:
         xletter_word_list = []
@@ -34,6 +36,18 @@ class WordleGame:
         word = random.choice(xletter_word_list)
         return word
     
+    def is_guess_valid(self, guess: str, start_time: int, end_time: int):
+        if (not guess.isalpha()):
+            print("Your guess may only contain letters")
+            return False
+        if (len(guess) != self.word_length):
+            print(f"You must guess a {self.word_length} letter word")
+            return False
+        if (end_time - start_time > self.GUESSTIME):
+            print(f"You must guess within {self.GUESSTIME} seconds")
+            return False
+        return True
+    
     
 def play_game():
     wordle_game = WordleGame(5, 5)
@@ -42,14 +56,18 @@ def play_game():
     
     while lives_left >= 0:
         start_time = time.time()
-        guess = input("You have 30 seconds to guess a 5 letter word")
+        guess = input("You have 30 seconds to guess a 5 letter word").lower()
         end_time = time.time()
-        if (end_time-start_time > wordle_game.GUESSTIME):       
+        if (not wordle_game.is_guess_valid(guess, start_time, end_time)):
             lives_left = lives_left - 1
-            print(f"Guess took too long & you've lost a life - {lives_left} remain")
+            time.sleep(5)
+            clear_console()
             continue
-        clear_console()
+        
         print(f"{guess}")
+        time.sleep(5)
+        clear_console()
+        
     else:
         print(f"No lives left! You lose!")
 
