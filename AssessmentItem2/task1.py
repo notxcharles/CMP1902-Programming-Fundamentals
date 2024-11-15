@@ -1,6 +1,6 @@
 def AskUserForPositiveInteger():
     while True:
-        userInput = input("Enter a positive integer (or done)")
+        userInput = input("Enter a positive integer (or done) ")
         
         if (userInput.lower() == "done"):
             return 0
@@ -8,8 +8,9 @@ def AskUserForPositiveInteger():
         try:
             userInputInteger = int(userInput)  
         except ValueError as e:
-            print(f"Error: {e}")
-            
+            print("Not an integer- please try again")
+            continue
+                    
         if (userInputInteger > 0):
             return userInputInteger
         print("Input was incorrect")
