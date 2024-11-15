@@ -12,7 +12,6 @@ def AskUserForPositiveInteger() -> None:
                     
         if (userInputInteger > 0):
             return userInputInteger
-        
         print("Input was incorrect")
 
 
@@ -37,6 +36,7 @@ def GetDuplicateIntegers(originalElements: list[int]) -> list[str]:
             duplicateIntegers.append(integer)
             
     return duplicateIntegers
+       
         
 def GetProductFromList(targetList: list[str]) -> int:
     product = 1
@@ -44,15 +44,18 @@ def GetProductFromList(targetList: list[str]) -> int:
         product = product * integer
     return product
 
+
 def GetRangeFromList(targetList: list[str]) -> int:
     # Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
     return targetList[len(targetList)-1] - targetList[0]
+
 
 def GetSumFromList(listOfNumbers: list[float]) -> float:
     sum = 0
     for number in listOfNumbers:
         sum = sum + number
     return sum
+
 
 def GetVarianceFromList(listOfNumbers: list[int]) -> float:
     listLength = len(listOfNumbers)
@@ -71,25 +74,44 @@ def GetVarianceFromList(listOfNumbers: list[int]) -> float:
     vardiv = variance / listLength
     return vardiv
 
+
+def SeperateOddEvenNumbers(listOfNumbers: list[int]) -> list[list[int], list[int]]:
+    oddIntegers = []
+    evenIntegers = []
+    for num in listOfNumbers:
+        if (num % 2 == 0):
+            evenIntegers.append(num)
+        else:
+            oddIntegers.append(num)
+            
+    return [oddIntegers, evenIntegers]
+
+
 def main():
     integerList = []
     while True:
         userInteger = AskUserForPositiveInteger()
         if userInteger == 0:
-            # user wants to see stats
+            # User wants to see stats
             break
         integerList.append(userInteger)
         
     uniqueList = GetUniqueIntegers(integerList)
     duplicateIntegers = GetDuplicateIntegers(integerList, uniqueList)
-    print(f"{duplicateIntegers=} | {integerList=} | {uniqueList=}")
     
     length = len(uniqueList)
     product = GetProductFromList(integerList)
     range = GetRangeFromList(uniqueList)
     variance = GetVarianceFromList(uniqueList)
-    print(f"{variance=}, {length=}, {product=}, {range=}")
     
+    oddNumbers, evenNumbers = SeperateOddEvenNumbers(uniqueList)
+    if (len(evenNumbers) == 0):
+        print("No even numbers were provided.")
+    if (len(oddNumbers) == 0):
+        print("No odd numbers were provided.")
+
+    print(f"{duplicateIntegers=} | {integerList=} | {uniqueList=}")
+    print(f"{variance=}, {length=}, {product=}, {range=}")
     
     
 main()
