@@ -1,4 +1,4 @@
-def AskUserForPositiveInteger():
+def AskUserForPositiveInteger() -> None:
     while True:
         userInput = input("Enter a positive integer (or done) ")
         if (userInput.lower() == "done"):
@@ -23,7 +23,7 @@ def GetUniqueIntegers(integerList: list[int]) -> list[int]:
     return integerList
 
 
-def GetDuplicateIntegers(originalElements: list[int], uniqueElements: list[str]) -> list[str]:
+def GetDuplicateIntegers(originalElements: list[int]) -> list[str]:
     integerQuantity = {}
     for integer in originalElements:
         if (integer not in integerQuantity):
