@@ -26,7 +26,7 @@ def GetDuplicateIntegers(originalElements: list[int]) -> list[str]:
     integerQuantity = {}
     for integer in originalElements:
         if (integer not in integerQuantity):
-            integerQuantity[integer] = 0
+            integerQuantity[integer] = 1
             continue
         integerQuantity[integer] += 1
         
@@ -97,7 +97,7 @@ def main():
         integerList.append(userInteger)
         
     uniqueList = GetUniqueIntegers(integerList)
-    duplicateIntegers = GetDuplicateIntegers(integerList, uniqueList)
+    duplicateIntegers = GetDuplicateIntegers(integerList)
     
     length = len(uniqueList)
     product = GetProductFromList(integerList)
@@ -110,8 +110,9 @@ def main():
     if (len(oddNumbers) == 0):
         print("No odd numbers were provided.")
 
-    print(f"{duplicateIntegers=} | {integerList=} | {uniqueList=}")
+    print(f"{integerList=} | {duplicateIntegers=} | {uniqueList=}")
     print(f"{variance=}, {length=}, {product=}, {range=}")
+    print(f"{oddNumbers=}, {evenNumbers=}")
     
     
 main()
