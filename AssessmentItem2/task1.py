@@ -1,174 +1,174 @@
-def AskUserForPositiveInteger() -> None:
+def ask_user_for_positive_integer() -> None:
     while True:
-        userInput = input("Enter a positive integer (or done) ")
-        if (userInput.lower() == "done"):
+        user_input = input("Enter a positive integer (or done) ")
+        if (user_input.lower() == "done"):
             return 0
         
         try:
-            userInputInteger = int(userInput)  
+            user_input_integer = int(user_input)  
         except ValueError as e:
             print("Not an integer- please try again")
             continue
                     
-        if (userInputInteger > 0):
-            return userInputInteger
+        if (user_input_integer > 0):
+            return user_input_integer
         print("Input was incorrect")
 
 
-def GetUniqueIntegers(integerList: list[int]) -> list[int]:
+def get_unique_integers(integer_list: list[int]) -> list[int]:
     """Given a list, return just the unique elements
 
     Args:
-        integerList (list[int]): list of input integers to be sorted into a unique list
+        integer_list (list[int]): list of input integers to be sorted into a unique list
 
     Returns:
         list[int]: a unique list of integers
     """
     # Sets only contain unique elements
-    integerSet = set(integerList)
-    integerList = list(integerSet)    
-    return integerList
+    integer_set = set(integer_list)
+    integer_list = list(integer_set)    
+    return integer_list
 
 
-def GetDuplicateIntegers(listOfNumbers: list[int]) -> list[int]:
+def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
     """Given a list of numbers, return a new list of numbers that contains any duplicate integers
 
     Args:
-        listOfNumbers (list[int]): list containing numbers 
+        list_of_numbers (list[int]): list containing numbers 
 
     Returns:
         list[int]: list of duplicate integers
     """
-    integerQuantity = {}
-    for integer in listOfNumbers:
-        if (integer not in integerQuantity):
-            integerQuantity[integer] = 1
+    integer_quantity = {}
+    for integer in list_of_numbers:
+        if (integer not in integer_quantity):
+            integer_quantity[integer] = 1
             continue
-        integerQuantity[integer] += 1
+        integer_quantity[integer] += 1
         
-    duplicateIntegers = []
-    for integer in integerQuantity:
-        if (integerQuantity[integer] != 1):
-            duplicateIntegers.append(integer)
+    duplicate_integers = []
+    for integer in integer_quantity:
+        if (integer_quantity[integer] != 1):
+            duplicate_integers.append(integer)
             
-    return duplicateIntegers
+    return duplicate_integers
        
         
-def GetProductFromList(listOfNumbers: list[int]) -> int:
+def get_product_from_list(list_of_numbers: list[int]) -> int:
     """Calculates and returns the product of a list of numbers
 
     Args:
-        listOfNumbers (list[int]): list containing numbers whose product is desired
+        list_of_numbers (list[int]): list containing numbers whose product is desired
 
     Returns:
-        int: _description_
+        int: returns product of a list of numbers
     """
     product = 1
-    for integer in listOfNumbers:
+    for integer in list_of_numbers:
         product = product * integer
     return product
 
 
-def GetRangeFromList(listOfNumbers: list[int]) -> int:
+def get_range_from_list(list_of_numbers: list[int]) -> int:
     """Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
 
     Args:
-        listOfNumbers (list[int]): sorted list containing numbers (smallest number at index 0) whose range is desired
+        list_of_numbers (list[int]): sorted list containing numbers (smallest number at index 0) whose range is desired
 
     Returns:
         int: range of the list. largest element - smallest element
     """
     # Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
-    return listOfNumbers[len(listOfNumbers)-1] - listOfNumbers[0]
+    return list_of_numbers[len(list_of_numbers)-1] - list_of_numbers[0]
 
 
-def GetSumFromList(listOfNumbers: list[float]) -> float:
+def get_sum_from_list(list_of_numbers: list[float]) -> float:
     """Calculates the sum of a /listOfNumbers/
 
     Args:
-        listOfNumbers (list[float]): list containing numbers whose sum is desired
+        list_of_numbers (list[float]): list containing numbers whose sum is desired
 
     Returns:
         float: sum of the list
     """
     sum = 0
-    for number in listOfNumbers:
+    for number in list_of_numbers:
         sum = sum + number
     return sum
 
 
-def GetVarianceFromList(listOfNumbers: list[int]) -> float:
+def get_variance_from_list(list_of_numbers: list[int]) -> float:
     """Calculates the variance of the list of numbers provided
 
     Args:
-        listOfNumbers (list[int]): list containing numbers whose variance is desired
+        list_of_numbers (list[int]): list containing numbers whose variance is desired
 
     Returns:
         float: variance of the list
     """
-    listLength = len(listOfNumbers)
+    listLength = len(list_of_numbers)
     if listLength == 0:
         return listLength
     
-    sum = GetSumFromList(listOfNumbers)
+    sum = get_sum_from_list(list_of_numbers)
     mean = sum / listLength
     
     squaredDifferences = []
-    for number in listOfNumbers:
+    for number in list_of_numbers:
         squaredDifference = (number - mean) ** 2
         squaredDifferences.append(squaredDifference)
         
-    variance = GetSumFromList(squaredDifferences) / listLength
+    variance = get_sum_from_list(squaredDifferences) / listLength
     return variance
 
 
-def SeperateOddEvenNumbers(listOfNumbers: list[int]) -> list[list[int], list[int]]:
+def seperate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
     """Seperates odd and even numbers into two lists, oddIntegers and evenIntegers
 
     Args:
-        listOfNumbers (list[int]): presorted list of integers
+        list_of_numbers (list[int]): presorted list of integers
 
     Returns:
         list[list[int], list[int]]: returns a list of two lists: [oddIntegers, evenIntegers]
     """
-    oddIntegers = []
-    evenIntegers = []
-    for num in listOfNumbers:
+    odd_integers = []
+    even_integers = []
+    for num in list_of_numbers:
         if (num % 2 == 0):
-            evenIntegers.append(num)
+            even_integers.append(num)
         else:
-            oddIntegers.append(num)
+            odd_integers.append(num)
 
-    seperateLists = [oddIntegers, evenIntegers]
-    return seperateLists
+    seperate_lists = [odd_integers, even_integers]
+    return seperate_lists
 
 
 def main():
-    integerList = []
+    integer_list = []
     while True:
-        userInteger = AskUserForPositiveInteger()
+        userInteger = ask_user_for_positive_integer()
         if userInteger == 0:
             # User wants to see stats
             break
-        integerList.append(userInteger)
+        integer_list.append(userInteger)
         
-    uniqueList = GetUniqueIntegers(integerList)
-    duplicateIntegers = GetDuplicateIntegers(integerList)
+    unique_list = get_unique_integers(integer_list)
+    duplicate_integers = get_duplicate_integers(integer_list)
     
-    length = len(uniqueList)
-    product = GetProductFromList(integerList)
-    range = GetRangeFromList(uniqueList)
-    variance = GetVarianceFromList(uniqueList)
+    length = len(unique_list)
+    product = get_product_from_list(integer_list)
+    range = get_range_from_list(unique_list)
+    variance = get_variance_from_list(unique_list)
     
-    oddNumbers, evenNumbers = SeperateOddEvenNumbers(uniqueList)
-    if (len(evenNumbers) == 0):
+    odd_numbers, even_numbers = seperate_odd_even_numbers(unique_list)
+    if (len(even_numbers) == 0):
         print("No even numbers were provided.")
-    if (len(oddNumbers) == 0):
+    if (len(odd_numbers) == 0):
         print("No odd numbers were provided.")
 
-    print(f"{integerList=} | {duplicateIntegers=} | {uniqueList=}")
+    print(f"{integer_list=} | {duplicate_integers=} | {unique_list=}")
     print(f"{variance=}, {length=}, {product=}, {range=}")
-    print(f"{oddNumbers=}, {evenNumbers=}")
+    print(f"{odd_numbers=}, {even_numbers=}")
     
     
 main()
