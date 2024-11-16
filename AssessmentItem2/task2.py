@@ -26,13 +26,13 @@ class WordleGame:
     character_frequency = dict()
     def __init__(self, lives = 5, word_length = 5):
         self.lives_left = lives
+        self.attempts = lives
         self.word = self.choose_xletter_word(all_words_list, word_length).lower()
         self.word_length = word_length
         self.previous_guesses = [] # list of the previous guessed words
-        # self.previous_hints = [[None] * word_length] * (lives + 1)
         self.previous_clues = []
-        print(self.previous_clues)
-        self.incorrect_letters = [] # list with all the incorrect letters that the user has used
+        # set with all the incorrect letters that the user has used. set because we want all letters to be unique
+        self.incorrect_letters = set() 
         self.character_frequency = self.calculate_word_character_frequency()
         
     def calculate_word_character_frequency(self) -> dict:
@@ -74,7 +74,7 @@ class WordleGame:
             print(f"looking at {character=}, pos {i}")
             if character not in self.word:
                 feedback[i] = '_'
-                self.incorrect_letters.append(character)
+                self.incorrect_letters.add(character)
                 continue
             if character in self.word and character == self.word[i]:
                 feedback[i] = '*'
@@ -88,13 +88,21 @@ class WordleGame:
         print(feedback)
         return 0
     
+    def create_display(self):
+        # Called after each time console is cleared
+        print(f"Lives Left: {self.lives_left}")
+        print(f"Incorrect letters: {self.incorrect_letters}\n")
+        print(self.word)
+        for i, clue in enumerate(self.previous_clues):
+            print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+        
+    
     
 def play_game():
     wordle_game = WordleGame(5, 5)
     print(f"Trying to guess:\n{wordle_game.word}")
-    lives_left = wordle_game.lives_left
     
-    while lives_left >= 0:
+    while wordle_game.lives_left > 0:
         start_time = time.time()
         guess = input("You have 30 seconds to guess a 5 letter word").lower()
         end_time = time.time()
@@ -116,6 +124,9 @@ def play_game():
         # print(f"{guess}")
         time.sleep(5)
         clear_console()
+        wordle_game.create_display()
+    
+    print("Out of the loop")
 
 def main():
     play_game()
