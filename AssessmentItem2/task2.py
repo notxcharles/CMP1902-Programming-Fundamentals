@@ -23,10 +23,26 @@ def clear_console():
 
 class WordleGame:
     GUESSTIME = 30
+    character_frequency = dict()
     def __init__(self, lives = 5, word_length = 5):
         self.lives_left = lives
         self.word = self.choose_xletter_word(all_words_list, word_length).lower()
         self.word_length = word_length
+        self.previous_guesses = [] # list of the previous guessed words
+        # self.previous_hints = [[None] * word_length] * (lives + 1)
+        self.previous_clues = []
+        print(self.previous_clues)
+        self.incorrect_letters = [] # list with all the incorrect letters that the user has used
+        self.character_frequency = self.calculate_word_character_frequency()
+        
+    def calculate_word_character_frequency(self) -> dict:
+        dictionary = self.character_frequency
+        for character in self.word:
+            if (character not in dictionary):
+                dictionary[character] = 1
+                continue
+            dictionary[character] += 1
+        return dictionary
         
     def choose_xletter_word(self, list_of_words: list[str], word_length: int) -> list[str]:
         xletter_word_list = []
@@ -48,6 +64,30 @@ class WordleGame:
             return False
         return True
     
+    def process_guess(self, guess: str) -> int:
+        if (guess == self.word):
+            print(f"Correct! The word was {guess}!")
+            return 1
+        
+        feedback = [None] * self.word_length
+        for i, character in enumerate(self.word):
+            print(f"looking at {character=}, pos {i}")
+            if character not in guess:
+                feedback[i] = '_'
+                self.incorrect_letters.append(character)
+                continue
+            if character in guess and character == guess[i]:
+                feedback[i] = '*'
+                continue
+            if character in guess:
+                feedback[i] = '+'
+                continue
+        
+        self.previous_guesses.append(guess)
+        self.previous_clues.append(feedback)
+        print(feedback)
+        return 0
+           
     
 def play_game():
     wordle_game = WordleGame(5, 5)
@@ -58,13 +98,23 @@ def play_game():
         start_time = time.time()
         guess = input("You have 30 seconds to guess a 5 letter word").lower()
         end_time = time.time()
+        
         if (not wordle_game.is_guess_valid(guess, start_time, end_time)):
             lives_left = lives_left - 1
             time.sleep(5)
             clear_console()
             continue
         
-        print(f"{guess}")
+        outcome = wordle_game.process_guess(guess)
+        if (outcome == 1):
+            # player has guessed the correct answer
+            print("Congratulations!")
+        elif (outcome == 0):
+            # player has made an incorrect guess
+            print("Incorrect guess")
+            wordle_game.lives_left = wordle_game.lives_left - 1
+        
+        # print(f"{guess}")
         time.sleep(5)
         clear_console()
         
