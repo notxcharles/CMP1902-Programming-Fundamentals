@@ -55,6 +55,7 @@ class WordleGame:
         return True
     
     def process_guess(self, guess: str) -> int:
+        self.previous_guesses.append(guess)
         if (guess == self.word):
             # print(f"Correct! The word was {guess}!")
             return 1
@@ -73,9 +74,7 @@ class WordleGame:
                 feedback[i] = '+'
                 continue
         
-        self.previous_guesses.append(guess)
         self.previous_clues.append(feedback)
-        print(feedback)
         return 0
     
     def create_display(self):
@@ -90,7 +89,7 @@ class WordleGame:
     def show_game_end_screen(self, game_won: bool):
         if (game_won):
             print(f"Congratulations, you've guessed the correct answer - {self.word}")
-            print(f"It took {len(self.previous_clues)} turns!")
+            print(f"It took {len(self.previous_guesses)} turns!")
         else:
             print(f"You've run out of lives! The word was {self.word}")
         print("")
