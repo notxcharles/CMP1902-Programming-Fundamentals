@@ -70,16 +70,16 @@ class WordleGame:
             return 1
         
         feedback = [None] * self.word_length
-        for i, character in enumerate(self.word):
+        for i, character in enumerate(guess):
             print(f"looking at {character=}, pos {i}")
-            if character not in guess:
+            if character not in self.word:
                 feedback[i] = '_'
                 self.incorrect_letters.append(character)
                 continue
-            if character in guess and character == guess[i]:
+            if character in self.word and character == self.word[i]:
                 feedback[i] = '*'
                 continue
-            if character in guess:
+            if character in self.word:
                 feedback[i] = '+'
                 continue
         
@@ -87,7 +87,7 @@ class WordleGame:
         self.previous_clues.append(feedback)
         print(feedback)
         return 0
-           
+    
     
 def play_game():
     wordle_game = WordleGame(5, 5)
@@ -113,13 +113,9 @@ def play_game():
             # player has made an incorrect guess
             print("Incorrect guess")
             wordle_game.lives_left = wordle_game.lives_left - 1
-        
         # print(f"{guess}")
         time.sleep(5)
         clear_console()
-        
-    else:
-        print(f"No lives left! You lose!")
 
 def main():
     play_game()
