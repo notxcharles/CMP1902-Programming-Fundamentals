@@ -56,12 +56,12 @@ class WordleGame:
     
     def process_guess(self, guess: str) -> int:
         if (guess == self.word):
-            print(f"Correct! The word was {guess}!")
+            # print(f"Correct! The word was {guess}!")
             return 1
         
         feedback = [None] * self.word_length
         for i, character in enumerate(guess):
-            print(f"looking at {character=}, pos {i}")
+            # print(f"looking at {character=}, pos {i}")
             if character not in self.word:
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
@@ -85,6 +85,18 @@ class WordleGame:
         print(self.word)
         for i, clue in enumerate(self.previous_clues):
             print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+        return
+            
+    def show_game_end_screen(self, game_won: bool):
+        if (game_won):
+            print(f"Congratulations, you've guessed the correct answer - {self.word}")
+            print(f"It took {len(self.previous_clues)} turns!")
+        else:
+            print(f"You've run out of lives! The word was {self.word}")
+        print("")
+        for i, clue in enumerate(self.previous_clues):
+            print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+        return
         
     
     
@@ -106,17 +118,19 @@ def play_game():
         outcome = wordle_game.process_guess(guess)
         if (outcome == 1):
             # player has guessed the correct answer
-            print("Congratulations!")
+            wordle_game.show_game_end_screen(game_won = True)
+            # TODO: After solving first time, show_game_end_screen shows "it took 0 turns!"
+            return
         elif (outcome == 0):
             # player has made an incorrect guess
             print("Incorrect guess")
             wordle_game.lives_left = wordle_game.lives_left - 1
-        # print(f"{guess}")
-        time.sleep(5)
+        # time.sleep(5)
         clear_console()
         wordle_game.create_display()
     
-    print("Out of the loop")
+    # Out of lives
+    wordle_game.show_game_end_screen(game_won = False)
 
 def main():
     play_game()
