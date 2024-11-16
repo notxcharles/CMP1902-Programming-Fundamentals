@@ -7,6 +7,6 @@
 `.\venv\Scripts\activate`
 
 ### Install Requirements:
-Install packages (such as pandas, numpy)
+Install packages (such as numpy)
 
 `pip install -r .\requirements.txt`
