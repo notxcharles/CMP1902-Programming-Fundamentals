@@ -30,19 +30,9 @@ class WordleGame:
         self.word = self.choose_xletter_word(all_words_list, word_length).lower()
         self.word_length = word_length
         self.previous_guesses = [] # list of the previous guessed words
-        self.previous_clues = []
+        self.previous_clues = [] # list of all the previously generated clues
         # set with all the incorrect letters that the user has used. set because we want all letters to be unique
         self.incorrect_letters = set() 
-        self.character_frequency = self.calculate_word_character_frequency()
-        
-    def calculate_word_character_frequency(self) -> dict:
-        dictionary = self.character_frequency
-        for character in self.word:
-            if (character not in dictionary):
-                dictionary[character] = 1
-                continue
-            dictionary[character] += 1
-        return dictionary
         
     def choose_xletter_word(self, list_of_words: list[str], word_length: int) -> list[str]:
         xletter_word_list = []
