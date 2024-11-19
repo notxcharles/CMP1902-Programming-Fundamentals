@@ -9,18 +9,18 @@ class PlayingCard:
         self.rank = rank
         self.suit = self.suits[suit]
         
-    def get_rank(self):
+    def get_rank(self) -> int:
         return self.rank
         
-    def get_suit(self):
+    def get_suit(self) -> int:
         return self.suit
             
-    def value(self):
+    def value(self) -> int:
         if (self.rank >= 10):
             return 10
         return self.rank
 
-    def __str__(self):
+    def __str__(self) -> str:
         card = self.cards[self.rank-1]
         return f"{card} of {self.suit}"
     

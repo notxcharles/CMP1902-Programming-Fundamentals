@@ -1,6 +1,6 @@
 class Cube():
     PI = 3.1415926
-    def __init__(self, side_length):
+    def __init__(self, side_length: float):
         self.side_length = side_length
 
     def get_side_length(self) -> float:

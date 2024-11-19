@@ -1,6 +1,6 @@
 class Sphere:
     PI = 3.1415926
-    def __init__(self, radius):
+    def __init__(self, radius: float):
         self.radius = radius
 
     def get_radius(self) -> float:
