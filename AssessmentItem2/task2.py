@@ -17,21 +17,20 @@ def clean_wordlist(word_list: list[str]) -> list[str]:
 
 all_words_list = clean_wordlist(all_words_list)
 
-def clear_console():
+def clear_console() -> None:
     print(chr(27) + "[2J")
     return 
 
 class WordleGame:
     GUESSTIME = 30
-    character_frequency = dict()
-    def __init__(self, lives = 5, word_length = 5):
+    def __init__(self, lives: int = 5, word_length: int = 5):
         self.lives_left = lives
         self.attempts = lives
         self.word = self.choose_xletter_word(all_words_list, word_length).lower()
         self.word_length = word_length
         self.previous_guesses = [] # list of the previous guessed words
         self.previous_clues = [] # list of all the previously generated clues
-        # set with all the incorrect letters that the user has used. set because we want all letters to be unique
+        # set with all the incorrect letters that the user has used. set because we want all elements to be unique
         self.incorrect_letters = set() 
         
     def choose_xletter_word(self, list_of_words: list[str], word_length: int) -> list[str]:
@@ -52,6 +51,7 @@ class WordleGame:
         if (end_time - start_time > self.GUESSTIME):
             print(f"You must guess within {self.GUESSTIME} seconds")
             return False
+        # TODO: need to check if it is a valid word (check in word list)
         return True
     
     def process_guess(self, guess: str) -> int:
@@ -81,7 +81,7 @@ class WordleGame:
         # Called after each time console is cleared
         print(f"Lives Left: {self.lives_left}")
         print(f"Incorrect letters: {self.incorrect_letters}\n")
-        print(self.word)
+        print(f"word to guess: {self.word}") # TODO: REMOVE THIS LATER
         for i, clue in enumerate(self.previous_clues):
             print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
         return
@@ -136,3 +136,12 @@ def main():
     return
 
 main()
+
+# Potential errors:
+# 1. word to guess was "boats"
+#       guessing the word "boots" returned **+**
+#       instead, the intended behaviour should have been **_**, with the second 'o' not belonging
+#       I need to check if this should have been in the incorrect letters set
+
+# 2. after guessing the correct word, the "congratulations, you've guessed the correct answer" line should be proceeded with a clear_console()
+

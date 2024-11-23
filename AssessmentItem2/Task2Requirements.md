@@ -2,7 +2,7 @@
 
 ~~during each turn the user provides a word as a guess~~
 
-guess must be a real word. if not, the user gets a warning and skips a turn  TODO: get a warning
+guess must be a real word. if not, the user gets a warning and skips a turn  TODO: this
 
 ~~* correct letter, correct position~~
 ~~+ correct letter,~~
