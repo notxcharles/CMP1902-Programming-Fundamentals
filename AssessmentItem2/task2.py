@@ -1,21 +1,6 @@
 import time, sys, random
 import numpy as np
 
-# I couldn't enter debug mode without referencing the folder
-# with open("./AssessmentItem2/dictionary.txt", 'r') as file:
-with open("dictionary.txt", 'r') as file:
-    word_file = file.read()
-all_words_list = word_file.split()
-
-def clean_wordlist(word_list: list[str]) -> list[str]:
-    new_word_list = []
-    for word in word_list:
-        # Some words contain the character ' , so lets ignore those words 
-        if ('\'' not in word):
-            new_word_list.append(word)
-    return new_word_list
-
-all_words_list = clean_wordlist(all_words_list)
 
 def clear_console() -> None:
     print(chr(27) + "[2J")
@@ -26,16 +11,35 @@ class WordleGame:
     def __init__(self, lives: int = 5, word_length: int = 5):
         self.lives_left = lives
         self.attempts = lives
-        self.word = self.choose_xletter_word(all_words_list, word_length).lower()
+        self.word_list = self.get_word_list()
+        self.word = self.choose_xletter_word(self.word_list, word_length).lower()
         self.word_length = word_length
         self.previous_guesses = [] # list of the previous guessed words
         self.previous_clues = [] # list of all the previously generated clues
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
         self.incorrect_letters = set() 
-        
-    def choose_xletter_word(self, list_of_words: list[str], word_length: int) -> list[str]:
+    
+    def clean_word_list(self, word_list: list[str]) -> list[str]:
+        # Some words contain the character ' , so lets ignore those words 
+        # TODO: remove all characters from string (not just ')
+        new_word_list = []
+        for word in word_list:
+            if ('\'' not in word):
+                new_word_list.append(word)
+        return new_word_list
+
+    def get_word_list(self) -> list[str]:
+        # I couldn't enter debug mode without referencing the folder
+        # with open("./AssessmentItem2/dictionary.txt", 'r') as file:
+        with open("dictionary.txt", 'r') as file:
+            word_file = file.read()
+            all_words_list = word_file.split()
+        all_words_list = self.clean_word_list(all_words_list)
+        return all_words_list
+
+    def choose_xletter_word(self, word_list: list[str], word_length: int) -> list[str]:
         xletter_word_list = []
-        for word in list_of_words:
+        for word in word_list:
             if (len(word) == word_length):
                 xletter_word_list.append(word)
         word = random.choice(xletter_word_list)
@@ -56,7 +60,7 @@ class WordleGame:
     
     def process_guess(self, guess: str) -> int:
         self.previous_guesses.append(guess)
-        if (guess not in all_words_list):
+        if (guess not in self.word_list):
             return 2
         
         if (guess == self.word):
