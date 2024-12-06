@@ -56,6 +56,9 @@ class WordleGame:
     
     def process_guess(self, guess: str) -> int:
         self.previous_guesses.append(guess)
+        if (guess not in all_words_list):
+            return 2
+        
         if (guess == self.word):
             # print(f"Correct! The word was {guess}!")
             return 1
@@ -105,7 +108,7 @@ def play_game():
     
     while wordle_game.lives_left > 0:
         start_time = time.time()
-        guess = input("You have 30 seconds to guess a 5 letter word").lower()
+        guess = input("You have 30 seconds to guess a 5 letter word:\n").lower()
         end_time = time.time()
         
         if (not wordle_game.is_guess_valid(guess, start_time, end_time)):
@@ -117,14 +120,18 @@ def play_game():
         outcome = wordle_game.process_guess(guess)
         if (outcome == 1):
             # player has guessed the correct answer
+            clear_console()
             wordle_game.show_game_end_screen(game_won = True)
             # TODO: After solving first time, show_game_end_screen shows "it took 0 turns!"
             return
         elif (outcome == 0):
             # player has made an incorrect guess
-            print("Incorrect guess")
+            print("Incorrect guess! You lose a life")
             wordle_game.lives_left = wordle_game.lives_left - 1
-        # time.sleep(5)
+        elif (outcome == 2):
+            print("Guess is not a word! You lose a life")
+            wordle_game.lives_left = wordle_game.lives_left - 1
+        time.sleep(5)
         clear_console()
         wordle_game.create_display()
     
