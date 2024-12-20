@@ -24,7 +24,7 @@ user should have the option to see past winners and their time before beginning 
 
 ~~after each guess, the program should provide the clue and a list of all letters the the user has used but are not part of the right answer~~
 
-the player is given 30 seconds to make a guess. if they provide a word after 30 seconds, the turn is lost TODO: lose a turn (add to previous guesses)
+~~the player is given 30 seconds to make a guess. if they provide a word after 30 seconds, the turn is lost~~
 
 ~~any erroneous input should be handled and there should be no crashing~~
 
