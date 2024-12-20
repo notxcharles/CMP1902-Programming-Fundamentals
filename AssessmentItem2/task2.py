@@ -57,20 +57,13 @@ class WordleGame:
             return False
         # TODO: need to check if it is a valid word (check in word list)
         return True
-    
-    def process_guess(self, guess: str) -> int:
-        self.previous_guesses.append(guess)
-        if (guess not in self.word_list):
-            # print(f"Incorrect! Must guess a valid word!")
-            return 2
-        
-        if (guess == self.word):
-            # print(f"Correct! The word was {guess}!")
-            return 1
-        
-        feedback = [None] * self.word_length
+
+    def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
+        feedback = ['_'] * self.word_length
+        if (invalid_guess == True):
+            return feedback
         for i, character in enumerate(guess):
-            # print(f"looking at {character=}, pos {i}")
+            # print(f"looking act {character=}, pos {i}")
             if character not in self.word:
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
@@ -81,7 +74,21 @@ class WordleGame:
             if character in self.word:
                 feedback[i] = '+'
                 continue
+        return feedback
+
+    def process_guess(self, guess: str) -> int:
+        self.previous_guesses.append(guess)
+        if (guess not in self.word_list):
+            # print(f"Incorrect! Must guess a valid word!")
+            feedback = self.create_guess_feedback(guess, invalid_guess = True)
+            self.previous_clues.append(feedback)
+            return 2
         
+        if (guess == self.word):
+            # print(f"Correct! The word was {guess}!")
+            return 1
+
+        feedback = self.create_guess_feedback(guess)
         self.previous_clues.append(feedback)
         return 0
     
@@ -91,7 +98,10 @@ class WordleGame:
         print(f"Incorrect letters: {self.incorrect_letters}\n")
         print(f"word to guess: {self.word}") # TODO: REMOVE THIS LATER
         for i, clue in enumerate(self.previous_clues):
-            print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+            if self.previous_guesses[i] in self.word_list:
+                print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+            else:
+                print(f"Turn {i + 1}/{self.attempts}: {clue}   invalid word: {self.previous_guesses[i]}")
         return
             
     def show_game_end_screen(self, game_won: bool):
@@ -105,7 +115,10 @@ class WordleGame:
             print(f"You've run out of lives! The word was {self.word}")
         print("")
         for i, clue in enumerate(self.previous_clues):
-            print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+            if self.previous_guesses[i] in self.word_list:
+                print(f"Turn {i + 1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+            else:
+                print(f"Turn {i + 1}/{self.attempts}: {clue}   invalid word: {self.previous_guesses[i]}")
         return
         
     
@@ -168,3 +181,5 @@ main()
 # Turn 3/5: ['_', '_', '_', '_', '*']   goods
 # Turn 4/5: ['_', '_', '_', '_', '+']   daddy
 # game ended
+# TODO:
+# don't lose a life when running out of time. is this intended?
