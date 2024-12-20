@@ -79,13 +79,13 @@ class WordleGame:
     def process_guess(self, guess: str) -> int:
         self.previous_guesses.append(guess)
         if (guess not in self.word_list):
-            # print(f"Incorrect! Must guess a valid word!")
+            print(f"Incorrect! Must guess a valid word!")
             feedback = self.create_guess_feedback(guess, invalid_guess = True)
             self.previous_clues.append(feedback)
             return 2
         
         if (guess == self.word):
-            # print(f"Correct! The word was {guess}!")
+            print(f"Correct! The word was {guess}!")
             return 1
 
         feedback = self.create_guess_feedback(guess)
@@ -107,10 +107,11 @@ class WordleGame:
     def show_game_end_screen(self, game_won: bool):
         if (game_won):
             print(f"Congratulations, you've guessed the correct answer - {self.word}")
+            print(f"{self.attempts}, {self.lives_left}")
             if (len(self.previous_guesses)) == 1:
-                print(f"It took {len(self.previous_guesses)} turn!")
+                print(f"It took {self.attempts - self.lives_left + 1} turn!")
             else:
-                print(f"It took {len(self.previous_guesses)} turns!")
+                print(f"It took {self.attempts - self.lives_left + 1} turns!")
         else:
             print(f"You've run out of lives! The word was {self.word}")
         print("")
@@ -125,17 +126,20 @@ class WordleGame:
     
 def play_game():
     wordle_game = WordleGame(5, 5)
+    print(f"lives left: {wordle_game.lives_left}")
     print(f"Trying to guess:\n{wordle_game.word}")
-    
     while wordle_game.lives_left > 0:
         start_time = time.time()
         guess = input("You have 30 seconds to guess a 5 letter word:\n").lower()
         end_time = time.time()
         
         if (not wordle_game.is_guess_valid(guess, start_time, end_time)):
+
             wordle_game.lives_left = wordle_game.lives_left - 1
+            print(f"Lives left: {wordle_game.lives_left}")
             time.sleep(5)
             clear_console()
+            wordle_game.create_display()
             continue
         
         outcome = wordle_game.process_guess(guess)
@@ -146,10 +150,9 @@ def play_game():
             return
         elif (outcome == 0):
             # player has made an incorrect guess
-            print("Incorrect guess! You lose a life")
             wordle_game.lives_left = wordle_game.lives_left - 1
         elif (outcome == 2):
-            print("Guess is not a word! You lose a life")
+            # must guess a word
             wordle_game.lives_left = wordle_game.lives_left - 1
         time.sleep(5)
         clear_console()
@@ -181,5 +184,3 @@ main()
 # Turn 3/5: ['_', '_', '_', '_', '*']   goods
 # Turn 4/5: ['_', '_', '_', '_', '+']   daddy
 # game ended
-# TODO:
-# don't lose a life when running out of time. is this intended?
