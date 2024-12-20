@@ -8,7 +8,7 @@
 ~~+ correct letter,~~
 ~~_ nothing correct~~
 
-the above symbols must be seperated by a space TODO: this
+~~the above symbols must be seperated by a space~~
 
 Multiple  instances  of  the  same  letter  in  a  guess,  such  as  the "o"s in "robot", will be assigned a * or + only if the letter also appears multiple times in the answer TODO: check this
 

@@ -91,6 +91,14 @@ class WordleGame:
         feedback = self.create_guess_feedback(guess)
         self.previous_clues.append(feedback)
         return 0
+
+    def clue_to_string(self, clue: list[str]) -> str:
+        string = ""
+        for i, character in enumerate(clue):
+            string += character
+            if (i != len(clue) - 1):
+                string += " "
+        return string
     
     def create_display(self):
         # Called after each time console is cleared
@@ -98,10 +106,11 @@ class WordleGame:
         print(f"Incorrect letters: {self.incorrect_letters}\n")
         print(f"word to guess: {self.word}") # TODO: REMOVE THIS LATER
         for i, clue in enumerate(self.previous_clues):
+            clue_string = self.clue_to_string(clue)
             if self.previous_guesses[i] in self.word_list:
-                print(f"Turn {i+1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+                print(f"Turn {i+1}/{self.attempts}: {clue_string}   {self.previous_guesses[i]}")
             else:
-                print(f"Turn {i + 1}/{self.attempts}: {clue}   invalid word: {self.previous_guesses[i]}")
+                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   invalid word: {self.previous_guesses[i]}")
         return
             
     def show_game_end_screen(self, game_won: bool):
@@ -116,10 +125,11 @@ class WordleGame:
             print(f"You've run out of lives! The word was {self.word}")
         print("")
         for i, clue in enumerate(self.previous_clues):
+            clue_string = self.clue_to_string(clue)
             if self.previous_guesses[i] in self.word_list:
-                print(f"Turn {i + 1}/{self.attempts}: {clue}   {self.previous_guesses[i]}")
+                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   {self.previous_guesses[i]}")
             else:
-                print(f"Turn {i + 1}/{self.attempts}: {clue}   invalid word: {self.previous_guesses[i]}")
+                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   invalid word: {self.previous_guesses[i]}")
         return
         
     
@@ -175,12 +185,3 @@ main()
 #       I need to check if this should have been in the incorrect letters set
 
 # 2. after guessing the correct word, the "congratulations, you've guessed the correct answer" line should be proceeded with a clear_console()
-
-# TODO:
-# when guessing an invalid word, the terminal doesn't display that a life has been used
-# Turn 1/5: ['_', '+', '_', '_', '*']   gravy
-# Turn 2/5: ['_', '_', '_', '_', '_']   groot
-# there was an invalid word here
-# Turn 3/5: ['_', '_', '_', '_', '*']   goods
-# Turn 4/5: ['_', '_', '_', '_', '+']   daddy
-# game ended
