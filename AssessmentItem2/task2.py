@@ -97,8 +97,10 @@ class WordleGame:
     def show_game_end_screen(self, game_won: bool):
         if (game_won):
             print(f"Congratulations, you've guessed the correct answer - {self.word}")
-            print(f"It took {len(self.previous_guesses)} turns!")
-            # TODO: 1 turn, 2 turns. fix grammar
+            if (len(self.previous_guesses)) == 1:
+                print(f"It took {len(self.previous_guesses)} turn!")
+            else:
+                print(f"It took {len(self.previous_guesses)} turns!")
         else:
             print(f"You've run out of lives! The word was {self.word}")
         print("")
