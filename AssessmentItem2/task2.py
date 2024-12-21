@@ -68,44 +68,17 @@ class WordleGame:
         return True
 
     def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
-        # word to guess: boats
-        #         guess: boots
-        #        answer: **_**
-        #
-        # word to guess: other
-        #         guess: afoot
-        #        answer: __+_+
-        #
-        # character_freqCorrect of the correct word
-        # character_freqGuess of the guess word
-        # first we need to loop over each character in the correct word to decide the postion of correct character, correct place
-        # if the character equals the guessed character and have the same position then
-        #       feedback[i] = *
-        #       character_freqCorrect[character] -= 1
-        #       character_freqGuess[character] -= 1
-
-        # second loop:
-        # if character equals the guessed character and character_freqCorrect[character] is not 0 then
-        #       feedback[i] = +
-        #       character_freqCorrect[character] -= 1
-        # else then
-        #       feedback[i] = _
-
         feedback = ['_'] * self.word_length
         if (invalid_guess == True):
             return feedback
 
         character_frequency_guess = self.get_character_frequency(guess)
-
         for i, character in enumerate(guess):
             if character in self.word and guess[i] == self.word[i]:
                 feedback[i] = '*'
                 self.character_frequency[character] -= 1
                 character_frequency_guess[character] -= 1
-
-
         for i, character in enumerate(guess):
-            # print(f"looking act {character=}, pos {i}")
             if character not in self.word:
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
