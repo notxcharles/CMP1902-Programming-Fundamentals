@@ -17,7 +17,8 @@ class WordleGame:
         self.max_attempts = self.lives_left
         self.word_list = self.get_word_list()
         self.word_length = 5
-        self.word = self.choose_xletter_word(self.word_list, self.word_length).lower()
+        self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
+        self.word = self.choose_xletter_word(self.valid_word_list).lower()
         self.characters = set()
         self.character_frequency = dict()
         self.player_name = ""
@@ -26,6 +27,11 @@ class WordleGame:
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
         self.incorrect_letters = set()
         self.correctly_guessed_letters = set()
+        # c_p_l will keep track of any letters that the user has guessed that are in the correct positions
+        # eg: where word = "hello"
+        #         guess1 = "homes
+        #          c_p_l = [h____]
+        self.correctly_positioned_letters = [None] * self.word_length
         self.hint_used = False
         self.hint = None
         self.play_game()
@@ -53,20 +59,57 @@ class WordleGame:
             frequency[character] = frequency.get(character, 0) + 1
         return frequency
 
-    def choose_xletter_word(self, word_list: list[str], word_length: int) -> str:
+    def get_xletter_words(self, word_list: list[str], word_length: int):
         xletter_word_list = []
         for word in word_list:
             if (len(word) == word_length):
                 xletter_word_list.append(word)
-        word = random.choice(xletter_word_list)
+        return xletter_word_list
+
+    def choose_xletter_word(self, word_list: list[str]) -> str:
+        word = random.choice(word_list)
         return word
 
     def player_chose_word_length(self, word_length: int):
         self.word_length = word_length
-        self.word = self.choose_xletter_word(self.word_list, word_length).lower()
+        self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
+        self.word = self.choose_xletter_word(self.valid_word_list).lower()
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
+        self.correctly_positioned_letters = [None] * self.word_length
         return
+
+    def get_valid_words(self) -> list[str]:
+        all_valid_words = []
+        for word in self.valid_word_list:
+            if (len(word) != self.word_length):
+                continue
+
+            skip_loop = False
+            for i, character in enumerate(self.correctly_positioned_letters):
+                if (character is None):
+                    continue
+                if (character != word[i]):
+                    skip_loop = True
+                    # we can eliminate that word from the word list
+                    break
+            if (skip_loop):
+                continue
+
+            cgl = self.correctly_guessed_letters
+            for character in self.correctly_guessed_letters:
+                if character not in word:
+                    skip_loop = True
+                    break
+            if (skip_loop):
+                continue
+
+            all_valid_words.append(word)
+            # TODO: check if word contains characters in self.correctly_positioned_letters or self.correctly_guessed_letters
+        return all_valid_words
+
+
+
 
     def generate_hint(self) -> None:
         if (self.hint_used):
@@ -79,6 +122,7 @@ class WordleGame:
         self.lives_left -= 1
         self.previous_guesses.append(f">>>hint: {self.hint}")
         self.previous_clues.append([])
+        self.correctly_guessed_letters.add(character)
         return
 
     def is_guess_valid(self, guess: str, start_time: float, end_time: float):
@@ -102,6 +146,7 @@ class WordleGame:
         for i, character in enumerate(guess):
             if guess[i] == self.word[i]:
                 feedback[i] = '*'
+                self.correctly_positioned_letters[i] = guess[i]
                 self.character_frequency[character] -= 1
                 character_frequency_guess[character] -= 1
 
@@ -216,9 +261,9 @@ class WordleGame:
         while self.lives_left > 0:
             guess_start_time = time.time()
             print("Input \"exit()\" to quit the game")
+            print("Input \"vocab()\" to see a list of all valid words")
             if (not self.hint_used):
                 print("Input \"hint()\" to reveal a letter. You can only use one hint and will lose a life.")
-                print(f"Hint: {self.hint}")
             guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:").lower()
             if guess.lower() == "exit()":
                 self.play_game()
@@ -226,6 +271,11 @@ class WordleGame:
                 self.generate_hint()
                 clear_console()
                 self.show_game_end_screen(game_won=False)
+                continue
+            elif guess.lower() == "vocab()":
+                print("Valid words:")
+                print(self.get_valid_words())
+                time.sleep(60)
                 continue
             guess_end_time = time.time()
 
