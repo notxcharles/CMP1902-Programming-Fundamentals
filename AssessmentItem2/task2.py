@@ -36,7 +36,7 @@ class WordleGame:
 
     def get_word_list(self) -> list[str]:
         # I couldn't enter debug mode without referencing the folder
-        with open("./AssessmentItem2/dictionary.txt", 'r') as file:
+        with open("dictionary.txt", 'r') as file:
         # with open("dictionary.txt", 'r') as file:
             word_file = file.read()
             all_words_list = word_file.split()
@@ -147,13 +147,13 @@ class WordleGame:
         return
 
     def read_winners_file(self):
-        with open("./AssessmentItem2/winners.txt", 'r') as file:
+        with open("winners.txt", 'r') as file:
             winners_file = file.read()
             winners_list = winners_file.split("\n")
         return winners_list
 
     def update_winners_file(self, name: str, game_time: float):
-        with open("./AssessmentItem2/winners.txt", 'a') as file:
+        with open("winners.txt", 'a') as file:
             file.write(f"{name} - {game_time:.2f}\n")
         return
 
