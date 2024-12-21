@@ -45,7 +45,7 @@ class WordleGame:
 
     def get_character_frequency(self, word: str) -> dict[str, int]:
         frequency = dict()
-        for character in self.word:
+        for character in word:
             frequency[character] = frequency.get(character, 0) + 1
         return frequency
 
@@ -81,17 +81,20 @@ class WordleGame:
             return feedback
 
         character_frequency_guess = self.get_character_frequency(guess)
+        print(f"character frequency of guess: {character_frequency_guess}")
+        print(f"character frequency of word: {self.character_frequency}")
         for i, character in enumerate(guess):
-            if character in self.word and guess[i] == self.word[i]:
+            if guess[i] == self.word[i]:
                 feedback[i] = '*'
                 self.character_frequency[character] -= 1
                 character_frequency_guess[character] -= 1
+
         for i, character in enumerate(guess):
             if character not in self.word:
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
                 continue
-            if character in self.word and self.character_frequency[character] != 0:
+            if feedback[i] != '*' and character in self.word and self.character_frequency[character] != 0:
                 feedback[i] = '+'
                 self.character_frequency[character] -= 1
                 continue
@@ -195,8 +198,8 @@ class WordleGame:
 
             if (not self.is_guess_valid(guess, guess_start_time, guess_end_time)):
                 self.lives_left = self.lives_left - 1
-                print(f"Lives left: {self.lives_left}")
-                time.sleep(2)
+                # print(f"Lives left: {self.lives_left}")
+                # time.sleep(2)
                 clear_console()
                 self.create_round_display()
                 continue
@@ -216,7 +219,7 @@ class WordleGame:
             elif (outcome == 2):
                 # must guess a word
                 self.lives_left = self.lives_left - 1
-            time.sleep(2)
+            # time.sleep(2)
             clear_console()
             self.create_round_display()
 
