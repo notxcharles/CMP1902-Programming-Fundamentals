@@ -12,13 +12,13 @@ def clear_console() -> None:
 
 class WordleGame:
     GUESSTIME = 30
-    def __init__(self, word_length: int = 5):
+    def __init__(self):
         self.lives_left = 6
         self.attempts = self.lives_left
         self.word_list = self.get_word_list()
-        self.word_length = word_length
-        self.word = self.choose_xletter_word(self.word_list).lower()
-        self.character_frequency = self.get_character_frequency(self.word)
+        self.word_length = 5
+        self.word = self.choose_xletter_word(self.word_list, self.word_length).lower()
+        self.character_frequency = dict()
         self.player_name = ""
         self.previous_guesses = [] # list of the previous guessed words
         self.previous_clues = [] # list of all the previously generated clues
@@ -49,13 +49,19 @@ class WordleGame:
             frequency[character] = frequency.get(character, 0) + 1
         return frequency
 
-    def choose_xletter_word(self, word_list: list[str]) -> str:
+    def choose_xletter_word(self, word_list: list[str], word_length: int) -> str:
         xletter_word_list = []
         for word in word_list:
-            if (len(word) == self.word_length):
+            if (len(word) == word_length):
                 xletter_word_list.append(word)
         word = random.choice(xletter_word_list)
         return word
+
+    def player_chose_word_length(self, word_length: int):
+        self.word_length = word_length
+        self.word = self.choose_xletter_word(self.word_list, word_length).lower()
+        self.character_frequency = self.get_character_frequency(self.word)
+        return
 
     def is_guess_valid(self, guess: str, start_time: float, end_time: float):
         if (not guess.isalpha()):
@@ -170,6 +176,14 @@ class WordleGame:
             for winner in previous_winners:
                 print(winner)
         print("")
+        word_length_selected = False
+        while (not word_length_selected):
+            word_length = input("Enter the word length you would like to play (4, 5, 6): ")
+            if (word_length.isdigit() and int(word_length) in [4, 5, 6]):
+                self.player_chose_word_length(int(word_length))
+                word_length_selected = True
+            else:
+                print("Invalid word length. Please enter a valid word length.")
 
         game_start_time = time.time()
         print(f"lives left: {self.lives_left}")
@@ -212,7 +226,7 @@ class WordleGame:
 
     
 def play_game():
-    wordle_game = WordleGame(5)
+    wordle_game = WordleGame()
 
 
 def main():
