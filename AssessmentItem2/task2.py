@@ -35,9 +35,7 @@ class WordleGame:
         return new_word_list
 
     def get_word_list(self) -> list[str]:
-        # I couldn't enter debug mode without referencing the folder
         with open("dictionary.txt", 'r') as file:
-        # with open("dictionary.txt", 'r') as file:
             word_file = file.read()
             all_words_list = word_file.split()
         all_words_list = self.clean_word_list(all_words_list)
@@ -67,7 +65,6 @@ class WordleGame:
         if (end_time - start_time > self.GUESSTIME):
             print(f"You must guess within {self.GUESSTIME} seconds")
             return False
-        # TODO: need to check if it is a valid word (check in word list)
         return True
 
     def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
@@ -108,7 +105,8 @@ class WordleGame:
         self.previous_clues.append(feedback)
         return 0
 
-    def clue_to_string(self, clue: list[str]) -> str:
+    @staticmethod
+    def clue_to_string(clue: list[str]) -> str:
         string = ""
         for i, character in enumerate(clue):
             string += character
@@ -146,13 +144,15 @@ class WordleGame:
         self.print_previous_clues()
         return
 
-    def read_winners_file(self):
+    @staticmethod
+    def read_winners_file():
         with open("winners.txt", 'r') as file:
             winners_file = file.read()
             winners_list = winners_file.split("\n")
         return winners_list
 
-    def update_winners_file(self, name: str, game_time: float):
+    @staticmethod
+    def update_winners_file(name: str, game_time: float):
         with open("winners.txt", 'a') as file:
             file.write(f"{name} - {game_time:.2f}\n")
         return
