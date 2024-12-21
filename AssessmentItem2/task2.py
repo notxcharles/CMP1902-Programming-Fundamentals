@@ -1,4 +1,6 @@
-import time, sys, random
+import time
+import sys
+import random
 import numpy as np
 
 
@@ -14,6 +16,7 @@ class WordleGame:
         self.word_list = self.get_word_list()
         self.word_length = word_length
         self.word = self.choose_xletter_word(self.word_list).lower()
+        self.character_frequency = self.get_character_frequency(self.word)
         self.previous_guesses = [] # list of the previous guessed words
         self.previous_clues = [] # list of all the previously generated clues
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
@@ -37,6 +40,12 @@ class WordleGame:
         all_words_list = self.clean_word_list(all_words_list)
         return all_words_list
 
+    def get_character_frequency(self, word: str) -> dict[str, int]:
+        frequency = dict()
+        for character in self.word:
+            frequency[character] = frequency.get(character, 0) + 1
+        return frequency
+
     def choose_xletter_word(self, word_list: list[str]) -> str:
         xletter_word_list = []
         for word in word_list:
@@ -59,20 +68,51 @@ class WordleGame:
         return True
 
     def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
+        # word to guess: boats
+        #         guess: boots
+        #        answer: **_**
+        #
+        # word to guess: other
+        #         guess: afoot
+        #        answer: __+_+
+        #
+        # character_freqCorrect of the correct word
+        # character_freqGuess of the guess word
+        # first we need to loop over each character in the correct word to decide the postion of correct character, correct place
+        # if the character equals the guessed character and have the same position then
+        #       feedback[i] = *
+        #       character_freqCorrect[character] -= 1
+        #       character_freqGuess[character] -= 1
+
+        # second loop:
+        # if character equals the guessed character and character_freqCorrect[character] is not 0 then
+        #       feedback[i] = +
+        #       character_freqCorrect[character] -= 1
+        # else then
+        #       feedback[i] = _
+
         feedback = ['_'] * self.word_length
         if (invalid_guess == True):
             return feedback
+
+        character_frequency_guess = self.get_character_frequency(guess)
+
+        for i, character in enumerate(guess):
+            if character in self.word and guess[i] == self.word[i]:
+                feedback[i] = '*'
+                self.character_frequency[character] -= 1
+                character_frequency_guess[character] -= 1
+
+
         for i, character in enumerate(guess):
             # print(f"looking act {character=}, pos {i}")
             if character not in self.word:
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
                 continue
-            if character in self.word and character == self.word[i]:
-                feedback[i] = '*'
-                continue
-            if character in self.word:
+            if character in self.word and self.character_frequency[character] != 0:
                 feedback[i] = '+'
+                self.character_frequency[character] -= 1
                 continue
         return feedback
 
