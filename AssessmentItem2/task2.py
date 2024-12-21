@@ -1,9 +1,5 @@
 import time
-import sys
 import random
-from mimetypes import guess_all_extensions
-
-import numpy as np
 
 class WordleGame:
     GUESSTIME = 30
