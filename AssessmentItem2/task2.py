@@ -32,6 +32,7 @@ class WordleGame:
         #         guess1 = "homes
         #          c_p_l = [h____]
         self.correctly_positioned_letters = [None] * self.word_length
+        self.valid_words = []
         self.hint_used = False
         self.hint = None
         self.play_game()
@@ -252,10 +253,12 @@ class WordleGame:
                 word_length_selected = True
             else:
                 print("Invalid word length. Please enter a valid word length.")
-
         game_start_time = time.time()
         while self.lives_left > 0:
             guess_start_time = time.time()
+            if (len(self.valid_words) > 0):
+                print(f"Valid words: {self.valid_words}")
+            self.valid_words = []
             print("Input \"exit()\" to quit the game")
             print("Input \"vocab()\" to see a list of all valid words")
             if (not self.hint_used):
@@ -269,9 +272,8 @@ class WordleGame:
                 self.create_round_display()
                 continue
             elif guess.lower() == "vocab()":
-                print("Valid words:")
-                print(self.get_valid_words())
-                time.sleep(60)
+                self.valid_words = self.get_valid_words()
+                clear_console()
                 continue
             guess_end_time = time.time()
 
