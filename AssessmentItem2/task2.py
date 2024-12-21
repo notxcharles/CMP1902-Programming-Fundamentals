@@ -99,8 +99,6 @@ class WordleGame:
             return feedback
 
         character_frequency_guess = self.get_character_frequency(guess)
-        print(f"character frequency of guess: {character_frequency_guess}")
-        print(f"character frequency of word: {self.character_frequency}")
         for i, character in enumerate(guess):
             if guess[i] == self.word[i]:
                 feedback[i] = '*'
@@ -221,7 +219,7 @@ class WordleGame:
             if (not self.hint_used):
                 print("Input \"hint()\" to reveal a letter. You can only use one hint and will lose a life.")
                 print(f"Hint: {self.hint}")
-            guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:\n").lower()
+            guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:").lower()
             if guess.lower() == "exit()":
                 self.play_game()
             elif guess.lower() == "hint()":
