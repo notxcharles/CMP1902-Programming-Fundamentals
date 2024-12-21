@@ -20,7 +20,8 @@ class WordleGame:
         self.previous_guesses = [] # list of the previous guessed words
         self.previous_clues = [] # list of all the previously generated clues
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
-        self.incorrect_letters = set() 
+        self.incorrect_letters = set()
+        self.play_game()
     
     def clean_word_list(self, word_list: list[str]) -> list[str]:
         # Some words contain the character ' , so lets ignore those words 
@@ -114,11 +115,12 @@ class WordleGame:
         return string
 
     def print_previous_clues(self):
-        clue_string = self.clue_to_string(clue)
-        if self.previous_guesses[i] in self.word_list:
-            print(f"Turn {i + 1}/{self.attempts}: {clue_string}   {self.previous_guesses[i]}")
-        else:
-            print(f"Turn {i + 1}/{self.attempts}: {clue_string}   invalid word: {self.previous_guesses[i]}")
+        for i, clue in enumerate(self.previous_clues):
+            clue_string = self.clue_to_string(clue)
+            if self.previous_guesses[i] in self.word_list:
+                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   {self.previous_guesses[i]}")
+            else:
+                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   invalid word: {self.previous_guesses[i]}")
         return
 
     def create_round_display(self):
@@ -141,46 +143,48 @@ class WordleGame:
             print(f"You've run out of lives! The word was {self.word}")
         self.print_previous_clues()
         return
+
+    def play_game(self):
+        print(f"lives left: {self.lives_left}")
+        print(f"Trying to guess:\n{self.word}")
+        while self.lives_left > 0:
+            start_time = time.time()
+            guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:\n").lower()
+            end_time = time.time()
+
+            if (not self.is_guess_valid(guess, start_time, end_time)):
+                self.lives_left = self.lives_left - 1
+                print(f"Lives left: {self.lives_left}")
+                time.sleep(2)
+                clear_console()
+                self.create_round_display()
+                continue
+
+            outcome = self.process_guess(guess)
+            if (outcome == 1):
+                # player has guessed the correct answer
+                clear_console()
+                self.show_game_end_screen(game_won=True)
+                return
+            elif (outcome == 0):
+                # player has made an incorrect guess
+                self.lives_left = self.lives_left - 1
+            elif (outcome == 2):
+                # must guess a word
+                self.lives_left = self.lives_left - 1
+            time.sleep(2)
+            clear_console()
+            self.create_round_display()
+
+        # Out of lives
+        clear_console()
+        self.show_game_end_screen(game_won=False)
         
     
     
 def play_game():
     wordle_game = WordleGame(5)
-    print(f"lives left: {wordle_game.lives_left}")
-    print(f"Trying to guess:\n{wordle_game.word}")
-    while wordle_game.lives_left > 0:
-        start_time = time.time()
-        guess = input("You have 30 seconds to guess a 5 letter word:\n").lower()
-        end_time = time.time()
-        
-        if (not wordle_game.is_guess_valid(guess, start_time, end_time)):
 
-            wordle_game.lives_left = wordle_game.lives_left - 1
-            print(f"Lives left: {wordle_game.lives_left}")
-            time.sleep(2)
-            clear_console()
-            wordle_game.create_round_display()
-            continue
-        
-        outcome = wordle_game.process_guess(guess)
-        if (outcome == 1):
-            # player has guessed the correct answer
-            clear_console()
-            wordle_game.show_game_end_screen(game_won = True)
-            return
-        elif (outcome == 0):
-            # player has made an incorrect guess
-            wordle_game.lives_left = wordle_game.lives_left - 1
-        elif (outcome == 2):
-            # must guess a word
-            wordle_game.lives_left = wordle_game.lives_left - 1
-        time.sleep(2)
-        clear_console()
-        wordle_game.create_round_display()
-    
-    # Out of lives
-    clear_console()
-    wordle_game.show_game_end_screen(game_won = False)
 
 def main():
     play_game()
