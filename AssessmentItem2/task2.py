@@ -86,6 +86,8 @@ class WordleGame:
             if (len(word) != self.word_length):
                 continue
 
+            # TODO: word should not contain characters that are in self.incorrect_letters()
+
             skip_loop = False
             for i, character in enumerate(self.correctly_positioned_letters):
                 if (character is None):
