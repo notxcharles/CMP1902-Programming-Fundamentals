@@ -105,11 +105,7 @@ class WordleGame:
                 continue
 
             all_valid_words.append(word)
-            # TODO: check if word contains characters in self.correctly_positioned_letters or self.correctly_guessed_letters
         return all_valid_words
-
-
-
 
     def generate_hint(self) -> None:
         if (self.hint_used):
@@ -270,7 +266,7 @@ class WordleGame:
             elif guess.lower() == "hint()":
                 self.generate_hint()
                 clear_console()
-                self.show_game_end_screen(game_won=False)
+                self.create_round_display()
                 continue
             elif guess.lower() == "vocab()":
                 print("Valid words:")
@@ -318,7 +314,6 @@ class WordleGame:
     
 def play_game():
     wordle_game = WordleGame()
-
 
 def main():
     play_game()
