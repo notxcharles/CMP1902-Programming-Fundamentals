@@ -98,7 +98,6 @@ class WordleGame:
             if (skip_loop):
                 continue
 
-            cgl = self.correctly_guessed_letters
             for character in self.correctly_guessed_letters:
                 if character not in word:
                     skip_loop = True
@@ -314,12 +313,9 @@ class WordleGame:
         self.clear_console()
         self.show_game_end_screen(game_won=False)
 
-    
-def play_game():
-    wordle_game = WordleGame()
 
 def main():
-    play_game()
+    WordleGame()
     return
 
 main()
