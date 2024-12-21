@@ -1,6 +1,8 @@
 import time
 import sys
 import random
+from mimetypes import guess_all_extensions
+
 import numpy as np
 
 
@@ -131,9 +133,9 @@ class WordleGame:
         self.print_previous_clues()
         return
             
-    def show_game_end_screen(self, game_won: bool):
+    def show_game_end_screen(self, game_won: bool, game_time: float = None):
         if (game_won):
-            print(f"Congratulations, you've guessed the correct answer - {self.word}")
+            print(f"Congratulations, you've guessed the correct answer - {self.word} in {game_time:.2f} seconds!")
             print(f"It took {self.attempts} attempts, {self.lives_left} lives remaining")
             if (len(self.previous_guesses)) == 1:
                 print(f"It took {self.attempts - self.lives_left + 1} turn!")
@@ -144,15 +146,38 @@ class WordleGame:
         self.print_previous_clues()
         return
 
+    def read_winners_file(self):
+        with open("./AssessmentItem2/winners.txt", 'r') as file:
+            winners_file = file.read()
+            winners_list = winners_file.split("\n")
+        return winners_list
+
+    def update_winners_file(self, name: str, game_time: float):
+        with open("./AssessmentItem2/winners.txt", 'a') as file:
+            file.write(f"{name} - {game_time:.2f}\n")
+        return
+
     def play_game(self):
+        # start of game
+        clear_console()
+        print("Welcome to Wordle!")
+        name = input("What is your name? ")
+        show_past_winners = input("Would you like to see past winners? (y/n) ")
+        if (show_past_winners.lower() == "y"):
+            previous_winners = self.read_winners_file()
+            for winner in previous_winners:
+                print(winner)
+        print("")
+
+        game_start_time = time.time()
         print(f"lives left: {self.lives_left}")
         print(f"Trying to guess:\n{self.word}")
         while self.lives_left > 0:
-            start_time = time.time()
+            guess_start_time = time.time()
             guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:\n").lower()
-            end_time = time.time()
+            guess_end_time = time.time()
 
-            if (not self.is_guess_valid(guess, start_time, end_time)):
+            if (not self.is_guess_valid(guess, guess_start_time, guess_end_time)):
                 self.lives_left = self.lives_left - 1
                 print(f"Lives left: {self.lives_left}")
                 time.sleep(2)
@@ -164,7 +189,10 @@ class WordleGame:
             if (outcome == 1):
                 # player has guessed the correct answer
                 clear_console()
-                self.show_game_end_screen(game_won=True)
+                game_end_time = time.time()
+                game_time = (game_end_time - game_start_time)
+                self.show_game_end_screen(game_won=True, game_time=game_time)
+                self.update_winners_file(name, game_time)
                 return
             elif (outcome == 0):
                 # player has made an incorrect guess
@@ -179,8 +207,7 @@ class WordleGame:
         # Out of lives
         clear_console()
         self.show_game_end_screen(game_won=False)
-        
-    
+
     
 def play_game():
     wordle_game = WordleGame(5)

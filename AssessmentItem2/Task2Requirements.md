@@ -25,9 +25,9 @@ player should have the option to give up at any time TODO: this
 
 MUST HAVES:
 
-code should ask the user for a name at the start and measure the time in seconds that they needed to solve the puzzle TODO: this
-this should be stored in a winners.txt file which is updated only after a win. TODO: this
-user should have the option to see past winners and their time before beginning a puzzle TODO: this
+~~code should ask the user for a name at the start and measure the time in seconds that they needed to solve the puzzle~~
+~~this should be stored in a winners.txt file which is updated only after a win~~
+~~user should have the option to see past winners and their time before beginning a puzzle~~
 
 ~~after each guess, the program should provide the clue and a list of all letters the the user has used but are not part of the right answer~~
 
