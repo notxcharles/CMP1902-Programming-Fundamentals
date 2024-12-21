@@ -5,11 +5,6 @@ from mimetypes import guess_all_extensions
 
 import numpy as np
 
-
-def clear_console() -> None:
-    print(chr(27) + "[2J")
-    return
-
 class WordleGame:
     GUESSTIME = 30
     def __init__(self):
@@ -36,6 +31,11 @@ class WordleGame:
         self.hint_used = False
         self.hint = None
         self.play_game()
+
+    @staticmethod
+    def clear_console() -> None:
+        print(chr(27) + "[2J")
+        return
 
     @staticmethod
     def clean_word_list(word_list: list[str]) -> list[str]:
@@ -237,7 +237,7 @@ class WordleGame:
 
     def play_game(self):
         # start of game
-        clear_console()
+        self.clear_console()
         print("Welcome to Wordle!")
         name = input("What is your name? ")
         self.player_name = name
@@ -270,12 +270,12 @@ class WordleGame:
                 self.play_game()
             elif guess.lower() == "hint()":
                 self.generate_hint()
-                clear_console()
+                self.clear_console()
                 self.create_round_display()
                 continue
             elif guess.lower() == "vocab()":
                 self.valid_words = self.get_valid_words()
-                clear_console()
+                self.clear_console()
                 continue
             guess_end_time = time.time()
 
@@ -284,18 +284,18 @@ class WordleGame:
                 self.lives_left = self.lives_left - 1
                 # print(f"Lives left: {self.lives_left}")
                 # time.sleep(2)
-                clear_console()
+                self.clear_console()
                 self.create_round_display()
                 self.previous_guesses.append(f">>>invalidguess: {guess}")
                 self.previous_clues.append([])
-                clear_console()
+                self.clear_console()
                 self.show_game_end_screen(game_won=False)
                 continue
 
             outcome = self.process_guess(guess)
             if (outcome == 1):
                 # player has guessed the correct answer
-                clear_console()
+                self.clear_console()
                 game_end_time = time.time()
                 game_time = (game_end_time - game_start_time)
                 self.show_game_end_screen(game_won=True, game_time=game_time)
@@ -308,11 +308,11 @@ class WordleGame:
                 # must guess a word
                 self.lives_left = self.lives_left - 1
             # time.sleep(2)
-            clear_console()
+            self.clear_console()
             self.create_round_display()
 
         # Out of lives
-        clear_console()
+        self.clear_console()
         self.show_game_end_screen(game_won=False)
 
     
