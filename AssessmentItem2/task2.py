@@ -189,11 +189,12 @@ class WordleGame:
                 print("Invalid word length. Please enter a valid word length.")
 
         game_start_time = time.time()
-        print(f"lives left: {self.lives_left}")
-        print(f"Trying to guess:\n{self.word}")
         while self.lives_left > 0:
             guess_start_time = time.time()
+            print("Input \"exit()\" to quit the game")
             guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:\n").lower()
+            if guess.lower() == "exit()":
+                self.play_game()
             guess_end_time = time.time()
 
             if (not self.is_guess_valid(guess, guess_start_time, guess_end_time)):
