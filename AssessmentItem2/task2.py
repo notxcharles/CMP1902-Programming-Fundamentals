@@ -50,20 +50,23 @@ class WordleGame:
         all_words_list = self.clean_word_list(all_words_list)
         return all_words_list
 
-    def get_character_frequency(self, word: str) -> dict[str, int]:
+    @staticmethod
+    def get_character_frequency(word: str) -> dict[str, int]:
         frequency = dict()
         for character in word:
             frequency[character] = frequency.get(character, 0) + 1
         return frequency
 
-    def get_xletter_words(self, word_list: list[str], word_length: int):
+    @staticmethod
+    def get_xletter_words(word_list: list[str], word_length: int):
         xletter_word_list = []
         for word in word_list:
             if (len(word) == word_length):
                 xletter_word_list.append(word)
         return xletter_word_list
 
-    def choose_xletter_word(self, word_list: list[str]) -> str:
+    @staticmethod
+    def choose_xletter_word(word_list: list[str]) -> str:
         word = random.choice(word_list)
         return word
 
