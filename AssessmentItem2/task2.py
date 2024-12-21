@@ -218,13 +218,16 @@ class WordleGame:
         while self.lives_left > 0:
             guess_start_time = time.time()
             print("Input \"exit()\" to quit the game")
-            print("Input \"hint()\" to reveal a letter. You can only use one hint and will lose a life.")
-            print(f"Hint: {self.hint}")
+            if (not self.hint_used):
+                print("Input \"hint()\" to reveal a letter. You can only use one hint and will lose a life.")
+                print(f"Hint: {self.hint}")
             guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:\n").lower()
             if guess.lower() == "exit()":
                 self.play_game()
             elif guess.lower() == "hint()":
                 self.generate_hint()
+                clear_console()
+                self.show_game_end_screen(game_won=False)
                 continue
             guess_end_time = time.time()
 
@@ -237,6 +240,8 @@ class WordleGame:
                 self.create_round_display()
                 self.previous_guesses.append(f">>>invalidguess: {guess}")
                 self.previous_clues.append([])
+                clear_console()
+                self.show_game_end_screen(game_won=False)
                 continue
 
             outcome = self.process_guess(guess)
