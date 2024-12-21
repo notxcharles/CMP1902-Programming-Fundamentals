@@ -14,7 +14,7 @@ Multiple  instances  of  the  same  letter  in  a  guess,  such  as  the "o"s in
 
 player should have the option to give up at any time TODO: this
 
-if the player fails to find the answer within six turns or gives up, they lose. if the answer is found they win. an appropiate message should be printed TODO: check six turns
+~~if the player fails to find the answer within six turns or gives up, they lose. if the answer is found they win. an appropiate message should be printed~~
 
 MUST HAVES:
 

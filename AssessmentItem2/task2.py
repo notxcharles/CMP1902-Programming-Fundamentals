@@ -8,7 +8,7 @@ def clear_console() -> None:
 
 class WordleGame:
     GUESSTIME = 30
-    def __init__(self, lives: int = 5, word_length: int = 5):
+    def __init__(self, lives: int = 6, word_length: int = 5):
         self.lives_left = lives
         self.attempts = lives
         self.word_list = self.get_word_list()
@@ -103,7 +103,7 @@ class WordleGame:
     def create_display(self):
         # Called after each time console is cleared
         print(f"Lives Left: {self.lives_left}")
-        print(f"Incorrect letters: {self.incorrect_letters}\n")
+        print(f"Incorrect letters: {self.incorrect_letters}")
         print(f"word to guess: {self.word}") # TODO: REMOVE THIS LATER
         for i, clue in enumerate(self.previous_clues):
             clue_string = self.clue_to_string(clue)
@@ -116,14 +116,13 @@ class WordleGame:
     def show_game_end_screen(self, game_won: bool):
         if (game_won):
             print(f"Congratulations, you've guessed the correct answer - {self.word}")
-            print(f"{self.attempts}, {self.lives_left}")
+            print(f"It took {self.attempts} attempts, {self.lives_left} lives remaining")
             if (len(self.previous_guesses)) == 1:
                 print(f"It took {self.attempts - self.lives_left + 1} turn!")
             else:
                 print(f"It took {self.attempts - self.lives_left + 1} turns!")
         else:
             print(f"You've run out of lives! The word was {self.word}")
-        print("")
         for i, clue in enumerate(self.previous_clues):
             clue_string = self.clue_to_string(clue)
             if self.previous_guesses[i] in self.word_list:
@@ -135,7 +134,7 @@ class WordleGame:
     
     
 def play_game():
-    wordle_game = WordleGame(5, 5)
+    wordle_game = WordleGame(6, 5)
     print(f"lives left: {wordle_game.lives_left}")
     print(f"Trying to guess:\n{wordle_game.word}")
     while wordle_game.lives_left > 0:
@@ -147,7 +146,7 @@ def play_game():
 
             wordle_game.lives_left = wordle_game.lives_left - 1
             print(f"Lives left: {wordle_game.lives_left}")
-            time.sleep(5)
+            time.sleep(2)
             clear_console()
             wordle_game.create_display()
             continue
@@ -164,7 +163,7 @@ def play_game():
         elif (outcome == 2):
             # must guess a word
             wordle_game.lives_left = wordle_game.lives_left - 1
-        time.sleep(5)
+        time.sleep(2)
         clear_console()
         wordle_game.create_display()
     
