@@ -25,8 +25,9 @@ class WordleGame:
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
         self.incorrect_letters = set()
         self.play_game()
-    
-    def clean_word_list(self, word_list: list[str]) -> list[str]:
+
+    @staticmethod
+    def clean_word_list(word_list: list[str]) -> list[str]:
         # Some words contain the character ' , so lets ignore those words 
         # TODO: remove all characters from string (not just ')
         new_word_list = []
