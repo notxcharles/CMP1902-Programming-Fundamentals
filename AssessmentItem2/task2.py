@@ -19,6 +19,7 @@ class WordleGame:
         self.word_length = word_length
         self.word = self.choose_xletter_word(self.word_list).lower()
         self.character_frequency = self.get_character_frequency(self.word)
+        self.player_name = ""
         self.previous_guesses = [] # list of the previous guessed words
         self.previous_clues = [] # list of all the previously generated clues
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
@@ -151,10 +152,9 @@ class WordleGame:
             winners_list = winners_file.split("\n")
         return winners_list
 
-    @staticmethod
-    def update_winners_file(name: str, game_time: float):
+    def update_winners_file(self, game_time: float):
         with open("winners.txt", 'a') as file:
-            file.write(f"{name} - {game_time:.2f}\n")
+            file.write(f"{self.player_name} - {game_time:.2f}\n")
         return
 
     def play_game(self):
@@ -162,6 +162,7 @@ class WordleGame:
         clear_console()
         print("Welcome to Wordle!")
         name = input("What is your name? ")
+        self.player_name = name
         show_past_winners = input("Would you like to see past winners? (y/n) ")
         if (show_past_winners.lower() == "y"):
             previous_winners = self.read_winners_file()
@@ -192,7 +193,7 @@ class WordleGame:
                 game_end_time = time.time()
                 game_time = (game_end_time - game_start_time)
                 self.show_game_end_screen(game_won=True, game_time=game_time)
-                self.update_winners_file(name, game_time)
+                self.update_winners_file(game_time)
                 return
             elif (outcome == 0):
                 # player has made an incorrect guess
