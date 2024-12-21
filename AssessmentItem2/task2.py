@@ -10,9 +10,9 @@ def clear_console() -> None:
 
 class WordleGame:
     GUESSTIME = 30
-    def __init__(self, lives: int = 6, word_length: int = 5):
-        self.lives_left = lives
-        self.attempts = lives
+    def __init__(self, word_length: int = 5):
+        self.lives_left = 6
+        self.attempts = self.lives_left
         self.word_list = self.get_word_list()
         self.word_length = word_length
         self.word = self.choose_xletter_word(self.word_list).lower()
@@ -112,18 +112,21 @@ class WordleGame:
             if (i != len(clue) - 1):
                 string += " "
         return string
-    
-    def create_display(self):
+
+    def print_previous_clues(self):
+        clue_string = self.clue_to_string(clue)
+        if self.previous_guesses[i] in self.word_list:
+            print(f"Turn {i + 1}/{self.attempts}: {clue_string}   {self.previous_guesses[i]}")
+        else:
+            print(f"Turn {i + 1}/{self.attempts}: {clue_string}   invalid word: {self.previous_guesses[i]}")
+        return
+
+    def create_round_display(self):
         # Called after each time console is cleared
         print(f"Lives Left: {self.lives_left}")
         print(f"Incorrect letters: {self.incorrect_letters}")
         print(f"word to guess: {self.word}") # TODO: REMOVE THIS LATER
-        for i, clue in enumerate(self.previous_clues):
-            clue_string = self.clue_to_string(clue)
-            if self.previous_guesses[i] in self.word_list:
-                print(f"Turn {i+1}/{self.attempts}: {clue_string}   {self.previous_guesses[i]}")
-            else:
-                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   invalid word: {self.previous_guesses[i]}")
+        self.print_previous_clues()
         return
             
     def show_game_end_screen(self, game_won: bool):
@@ -136,18 +139,13 @@ class WordleGame:
                 print(f"It took {self.attempts - self.lives_left + 1} turns!")
         else:
             print(f"You've run out of lives! The word was {self.word}")
-        for i, clue in enumerate(self.previous_clues):
-            clue_string = self.clue_to_string(clue)
-            if self.previous_guesses[i] in self.word_list:
-                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   {self.previous_guesses[i]}")
-            else:
-                print(f"Turn {i + 1}/{self.attempts}: {clue_string}   invalid word: {self.previous_guesses[i]}")
+        self.print_previous_clues()
         return
         
     
     
 def play_game():
-    wordle_game = WordleGame(6, 5)
+    wordle_game = WordleGame(5)
     print(f"lives left: {wordle_game.lives_left}")
     print(f"Trying to guess:\n{wordle_game.word}")
     while wordle_game.lives_left > 0:
@@ -161,7 +159,7 @@ def play_game():
             print(f"Lives left: {wordle_game.lives_left}")
             time.sleep(2)
             clear_console()
-            wordle_game.create_display()
+            wordle_game.create_round_display()
             continue
         
         outcome = wordle_game.process_guess(guess)
@@ -178,7 +176,7 @@ def play_game():
             wordle_game.lives_left = wordle_game.lives_left - 1
         time.sleep(2)
         clear_console()
-        wordle_game.create_display()
+        wordle_game.create_round_display()
     
     # Out of lives
     clear_console()
@@ -189,11 +187,3 @@ def main():
     return
 
 main()
-
-# Potential errors:
-# 1. word to guess was "boats"
-#       guessing the word "boots" returned **+**
-#       instead, the intended behaviour should have been **_**, with the second 'o' not belonging
-#       I need to check if this should have been in the incorrect letters set
-
-# 2. after guessing the correct word, the "congratulations, you've guessed the correct answer" line should be proceeded with a clear_console()
