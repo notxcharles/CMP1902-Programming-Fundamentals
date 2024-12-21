@@ -3,29 +3,29 @@ import random
 
 class WordleGame:
     GUESSTIME = 30
-    def __init__(self):
-        self.lives_left = 6
-        self.max_attempts = self.lives_left
-        self.word_list = self.get_word_list()
-        self.word_length = 5
-        self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
-        self.word = self.choose_xletter_word(self.valid_word_list).lower()
-        self.characters = set()
-        self.character_frequency = dict()
-        self.player_name = ""
-        self.previous_guesses = [] # list of the previous guessed words
-        self.previous_clues = [] # list of all the previously generated clues
+    def __init__(self) -> None:
+        self.lives_left: int = 6
+        self.max_attempts: int = self.lives_left
+        self.word_list: list[str] = self.get_word_list()
+        self.word_length: int = 5
+        self.valid_word_list: list[str] = self.get_xletter_words(self.word_list, self.word_length)
+        self.word: str = self.choose_xletter_word(self.valid_word_list).lower()
+        self.characters: set = set()
+        self.character_frequency: dict = dict()
+        self.player_name: str = ""
+        self.previous_guesses: list[str] = [] # list of the previous guessed words
+        self.previous_clues: list[list[str]] = [] # list of all the previously generated clues
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
-        self.incorrect_letters = set()
-        self.correctly_guessed_letters = set()
+        self.incorrect_letters: set = set()
+        self.correctly_guessed_letters: set = set()
         # c_p_l will keep track of any letters that the user has guessed that are in the correct positions
         # eg: where word = "hello"
         #         guess1 = "homes
         #          c_p_l = [h____]
-        self.correctly_positioned_letters = [None] * self.word_length
-        self.valid_words = []
-        self.hint_used = False
-        self.hint = None
+        self.correctly_positioned_letters: list[str | None] = [None] * self.word_length
+        self.valid_words: list[str] = []
+        self.hint_used: bool = False
+        self.hint: str | None = None
         self.play_game()
 
     @staticmethod
@@ -37,7 +37,7 @@ class WordleGame:
     def clean_word_list(word_list: list[str]) -> list[str]:
         # Some words contain the character ' , so lets ignore those words 
         # TODO: remove all characters from string (not just ')
-        new_word_list = []
+        new_word_list: list[str] = []
         for word in word_list:
             if ('\'' not in word):
                 new_word_list.append(word)
@@ -47,19 +47,19 @@ class WordleGame:
         with open("dictionary.txt", 'r') as file:
             word_file = file.read()
             all_words_list = word_file.split()
-        all_words_list = self.clean_word_list(all_words_list)
+        all_words_list: list[str] = self.clean_word_list(all_words_list)
         return all_words_list
 
     @staticmethod
     def get_character_frequency(word: str) -> dict[str, int]:
-        frequency = dict()
+        frequency: dict = dict()
         for character in word:
             frequency[character] = frequency.get(character, 0) + 1
         return frequency
 
     @staticmethod
     def get_xletter_words(word_list: list[str], word_length: int):
-        xletter_word_list = []
+        xletter_word_list: list[str] = []
         for word in word_list:
             if (len(word) == word_length):
                 xletter_word_list.append(word)
@@ -67,10 +67,10 @@ class WordleGame:
 
     @staticmethod
     def choose_xletter_word(word_list: list[str]) -> str:
-        word = random.choice(word_list)
+        word: str = random.choice(word_list)
         return word
 
-    def player_chose_word_length(self, word_length: int):
+    def player_chose_word_length(self, word_length: int) -> None:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
@@ -80,14 +80,14 @@ class WordleGame:
         return
 
     def get_valid_words(self) -> list[str]:
-        all_valid_words = []
+        all_valid_words: list[str] = []
         for word in self.valid_word_list:
             if (len(word) != self.word_length):
                 continue
 
             # TODO: word should not contain characters that are in self.incorrect_letters()
 
-            skip_loop = False
+            skip_loop: bool = False
             for i, character in enumerate(self.correctly_positioned_letters):
                 if (character is None):
                     continue
@@ -122,7 +122,7 @@ class WordleGame:
         self.correctly_guessed_letters.add(character)
         return
 
-    def is_guess_valid(self, guess: str, start_time: float, end_time: float):
+    def is_guess_valid(self, guess: str, start_time: float, end_time: float) -> bool:
         if (not guess.isalpha()):
             print("Your guess may only contain letters")
             return False
@@ -135,7 +135,7 @@ class WordleGame:
         return True
 
     def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
-        feedback = ['_'] * self.word_length
+        feedback: list[str] = ['_'] * self.word_length
         if (invalid_guess == True):
             return feedback
 
@@ -164,11 +164,11 @@ class WordleGame:
         self.previous_guesses.append(guess)
         if (guess not in self.word_list):
             print(f"Incorrect! Must guess a valid word!")
-            feedback = self.create_guess_feedback(guess, invalid_guess = True)
+            feedback: list[str] = self.create_guess_feedback(guess, invalid_guess = True)
             self.previous_clues.append(feedback)
             return 2
 
-        feedback = self.create_guess_feedback(guess)
+        feedback: list[str] = self.create_guess_feedback(guess)
         self.previous_clues.append(feedback)
 
         if (guess == self.word):
@@ -179,17 +179,17 @@ class WordleGame:
 
     @staticmethod
     def clue_to_string(clue: list[str]) -> str:
-        string = ""
+        string: str = ""
         for i, character in enumerate(clue):
             string += character
             if (i != len(clue) - 1):
                 string += " "
         return string
 
-    def print_previous_clues(self):
+    def print_previous_clues(self) -> None:
         for i, guess in enumerate(self.previous_guesses):
-            clue = self.previous_clues[i]
-            clue_string = self.clue_to_string(clue)
+            clue: list[str] = self.previous_clues[i]
+            clue_string: str = self.clue_to_string(clue)
             if guess in self.word_list:
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   {guess}")
             elif guess.split(" ")[0] == ">>>hint:":
@@ -200,7 +200,7 @@ class WordleGame:
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   invalid word: {guess}")
         return
 
-    def create_round_display(self):
+    def create_round_display(self) -> None:
         # Called after each time console is cleared
         print(f"Lives Left: {self.lives_left}")
         print(f"Incorrect letters: {self.incorrect_letters}")
@@ -208,7 +208,7 @@ class WordleGame:
         self.print_previous_clues()
         return
             
-    def show_game_end_screen(self, game_won: bool, game_time: float = None):
+    def show_game_end_screen(self, game_won: bool, game_time: float = None) -> None:
         if (game_won):
             print(f"Congratulations, you've guessed the correct answer - {self.word} in {game_time:.2f} seconds!")
             # print(f"It took {self.max_attempts} attempts, {self.lives_left} lives remaining")
@@ -222,40 +222,40 @@ class WordleGame:
         return
 
     @staticmethod
-    def read_winners_file():
+    def read_winners_file() -> list[str]:
         with open("winners.txt", 'r') as file:
             winners_file = file.read()
             winners_list = winners_file.split("\n")
         return winners_list
 
-    def update_winners_file(self, game_time: float):
+    def update_winners_file(self, game_time: float) -> None:
         with open("winners.txt", 'a') as file:
             file.write(f"{self.player_name} - {game_time:.2f}\n")
         return
 
-    def play_game(self):
+    def play_game(self) -> None:
         # start of game
         self.clear_console()
         print("Welcome to Wordle!")
-        name = input("What is your name? ")
+        name: str = input("What is your name? ")
         self.player_name = name
-        show_past_winners = input("Would you like to see past winners? (y/n) ")
+        show_past_winners: str = input("Would you like to see past winners? (y/n) ")
         if (show_past_winners.lower() == "y"):
-            previous_winners = self.read_winners_file()
+            previous_winners: list[str] = self.read_winners_file()
             for winner in previous_winners:
                 print(winner)
         print("")
-        word_length_selected = False
+        word_length_selected: bool = False
         while (not word_length_selected):
-            word_length = input("Enter the word length you would like to play (4, 5, 6): ")
+            word_length: str = input("Enter the word length you would like to play (4, 5, 6): ")
             if (word_length.isdigit() and int(word_length) in [4, 5, 6]):
                 self.player_chose_word_length(int(word_length))
                 word_length_selected = True
             else:
                 print("Invalid word length. Please enter a valid word length.")
-        game_start_time = time.time()
+        game_start_time: float = time.time()
         while self.lives_left > 0:
-            guess_start_time = time.time()
+            guess_start_time: float = time.time()
             if (len(self.valid_words) > 0):
                 print(f"Valid words: {self.valid_words}")
             self.valid_words = []
@@ -275,13 +275,11 @@ class WordleGame:
                 self.valid_words = self.get_valid_words()
                 self.clear_console()
                 continue
-            guess_end_time = time.time()
+            guess_end_time: float = time.time()
 
             if (not self.is_guess_valid(guess, guess_start_time, guess_end_time)):
                 print("not valid")
                 self.lives_left = self.lives_left - 1
-                # print(f"Lives left: {self.lives_left}")
-                # time.sleep(2)
                 self.clear_console()
                 self.create_round_display()
                 self.previous_guesses.append(f">>>invalidguess: {guess}")
@@ -294,8 +292,8 @@ class WordleGame:
             if (outcome == 1):
                 # player has guessed the correct answer
                 self.clear_console()
-                game_end_time = time.time()
-                game_time = (game_end_time - game_start_time)
+                game_end_time: float = time.time()
+                game_time: float = (game_end_time - game_start_time)
                 self.show_game_end_screen(game_won=True, game_time=game_time)
                 self.update_winners_file(game_time)
                 return
@@ -312,6 +310,7 @@ class WordleGame:
         # Out of lives
         self.clear_console()
         self.show_game_end_screen(game_won=False)
+        return
 
 
 def main():
