@@ -154,6 +154,8 @@ class WordleGame:
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   {guess}")
             elif guess.split(" ")[0] == ">>>hint:":
                 print(f"Turn {i + 1}/{self.max_attempts}: Hint-  {guess.split(" ")[1]}")
+            elif guess.split(" ")[0] == ">>>invalidguess:":
+                print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}")
             else:
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   invalid word: {guess}")
         return
@@ -233,6 +235,8 @@ class WordleGame:
                 # time.sleep(2)
                 clear_console()
                 self.create_round_display()
+                self.previous_guesses.append(f">>>invalidguess: {guess}")
+                self.previous_clues.append([])
                 continue
 
             outcome = self.process_guess(guess)
