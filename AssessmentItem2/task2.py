@@ -118,7 +118,8 @@ class WordleGame:
         return all_valid_words
 
     def generate_hint(self) -> None:
-        """Generates a hint for the player. hint is a single character that has not already been guessed"""
+        """Generates a hint for the player.The hint is a
+        single character that has not already been guessed"""
         if (self.hint_used):
             # player has already used their hint
             return
@@ -132,7 +133,8 @@ class WordleGame:
         return
 
     def is_guess_valid(self, guess: str, start_time: float, end_time: float) -> bool:
-        """Returns True if the guess is valid. Checks for alphabetic characters, length, and guess time"""
+        """Returns True if the guess is valid. Checks for
+        alphabetic characters, length, and guess time"""
         if (not guess.isalpha()):
             print("Your guess may only contain letters")
             return False
@@ -152,30 +154,30 @@ class WordleGame:
 
         character_frequency_guess = self.get_character_frequency(guess)
         for i, character in enumerate(guess):
-            if guess[i] == self.word[i]:
+            if (guess[i] == self.word[i]):
                 feedback[i] = '*'
                 self.correctly_positioned_letters[i] = guess[i]
                 self.character_frequency[character] -= 1
                 character_frequency_guess[character] -= 1
 
         for i, character in enumerate(guess):
-            if character not in self.word:
+            if (character not in self.word):
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
                 continue
-            if feedback[i] != '*' and character in self.word and self.character_frequency[character] != 0:
+            if (feedback[i] != '*' and character in self.word and self.character_frequency[character] != 0):
                 feedback[i] = '+'
                 self.character_frequency[character] -= 1
                 continue
-            if character in self.word:
+            if (character in self.word):
                 self.correctly_guessed_letters.add(character)
         return feedback
 
     def process_guess(self, guess: str) -> int:
         """Processes a guess and returns the outcome of the guess.
-        0 - incorrect guess
-        1 - correct guess
-        2 - error: must guess a valid word"""
+        0- incorrect guess
+        1- correct guess
+        2- error: must guess a valid word"""
         self.previous_guesses.append(guess)
         if (guess not in self.word_list):
             print(f"Incorrect! Must guess a valid word!")
@@ -189,7 +191,6 @@ class WordleGame:
         if (guess == self.word):
             print(f"Correct! The word was {guess}!")
             return 1
-
         return 0
 
     @staticmethod
@@ -207,11 +208,11 @@ class WordleGame:
         for i, guess in enumerate(self.previous_guesses):
             clue: list[str] = self.previous_clues[i]
             clue_string: str = self.clue_to_string(clue)
-            if guess in self.word_list:
+            if (guess in self.word_list):
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   {guess}")
-            elif guess.split(" ")[0] == ">>>hint:":
+            elif (guess.split(" ")[0] == ">>>hint:"):
                 print(f"Turn {i + 1}/{self.max_attempts}: Hint-  {guess.split(" ")[1]}")
-            elif guess.split(" ")[0] == ">>>invalidguess:":
+            elif (guess.split(" ")[0] == ">>>invalidguess:"):
                 print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}")
             else:
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   invalid word: {guess}")
@@ -219,10 +220,9 @@ class WordleGame:
 
     def create_round_display(self) -> None:
         """Creates a display of the current round"""
-        # Called after each time console is cleared
         print(f"Lives Left: {self.lives_left}")
         print(f"Incorrect letters: {self.incorrect_letters}")
-        print(f"word to guess: {self.word}") # TODO: for debugging use
+        # print(f"word to guess: {self.word}") # for debugging use
         self.print_previous_clues()
         return
             
@@ -230,8 +230,7 @@ class WordleGame:
         """Creates the end screen of the game"""
         if (game_won):
             print(f"Congratulations, you've guessed the correct answer - {self.word} in {game_time:.2f} seconds!")
-            # print(f"It took {self.max_attempts} attempts, {self.lives_left} lives remaining")
-            if (len(self.previous_guesses)) == 1:
+            if (len(self.previous_guesses) == 1):
                 print(f"It took {self.max_attempts - self.lives_left + 1} turn!")
             else:
                 print(f"It took {self.max_attempts - self.lives_left + 1} turns!")
