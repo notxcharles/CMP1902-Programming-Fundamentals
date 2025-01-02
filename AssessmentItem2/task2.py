@@ -253,6 +253,13 @@ class WordleGame:
             file.write(f"{self.player_name} - {game_time:.2f}\n")
         return
 
+    def exit_game(self) -> None:
+        """Exits the game"""
+        self.clear_console()
+        print("Thanks for playing!")
+        return exit()
+
+
     def play_game(self) -> None:
         """Main game loop"""
         self.clear_console()
@@ -288,12 +295,11 @@ class WordleGame:
             print("Input \"vocab()\" to see a list of all valid words")
             if (not self.hint_used):
                 print("Input \"hint()\" to reveal a letter. You can only use one hint and will lose a life.")
-            guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:").lower()
+            guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word: ").lower()
             guess_end_time = time.time()
 
             if guess.lower() == "exit()":
-                # TODO: should this stop the game completely or restart the game?
-                self.play_game()
+                self.exit_game()
             elif guess.lower() == "hint()":
                 self.generate_hint()
                 self.clear_console()
