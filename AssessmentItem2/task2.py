@@ -35,11 +35,13 @@ class WordleGame:
 
     @staticmethod
     def clean_word_list(word_list: list[str]) -> list[str]:
-        # Some words contain the character ' , so lets ignore those words 
-        # TODO: remove all characters from string (not just ')
+        # if a word has a non-alphabet character in, ignore the word
         new_word_list: list[str] = []
         for word in word_list:
-            if ('\'' not in word):
+            for char in word:
+                if (not char.isalpha()):
+                    break
+            else:
                 new_word_list.append(word)
         return new_word_list
 
