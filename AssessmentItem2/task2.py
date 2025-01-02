@@ -18,7 +18,8 @@ class WordleGame:
         # set with all the incorrect letters that the user has used. set because we want all elements to be unique
         self.incorrect_letters: set = set()
         self.correctly_guessed_letters: set = set()
-        # c_p_l will keep track of any letters that the user has guessed that are in the correct positions
+        # correctly_positioned_letters will keep track of any letters that the
+        # user has guessed that are in the correct positions
         # eg: where word = "hello"
         #         guess1 = "homes
         #          c_p_l = [h____]
@@ -30,12 +31,13 @@ class WordleGame:
 
     @staticmethod
     def clear_console() -> None:
+        """Clears the console screen"""
         print(chr(27) + "[2J")
         return
 
     @staticmethod
     def clean_word_list(word_list: list[str]) -> list[str]:
-        # if a word has a non-alphabet character in, ignore the word
+        """Removes words that contain non-alphabet characters"""
         new_word_list: list[str] = []
         for word in word_list:
             for char in word:
@@ -46,6 +48,7 @@ class WordleGame:
         return new_word_list
 
     def get_word_list(self) -> list[str]:
+        """Returns a list of all words in the dictionary"""
         with open("dictionary.txt", 'r') as file:
             word_file = file.read()
             all_words_list = word_file.split()
@@ -54,6 +57,7 @@ class WordleGame:
 
     @staticmethod
     def get_character_frequency(word: str) -> dict[str, int]:
+        """Returns a dictionary of the frequency of each character in a word"""
         frequency: dict = dict()
         for character in word:
             frequency[character] = frequency.get(character, 0) + 1
@@ -61,6 +65,7 @@ class WordleGame:
 
     @staticmethod
     def get_xletter_words(word_list: list[str], word_length: int):
+        """Returns a list of words that contain x number of letters"""
         xletter_word_list: list[str] = []
         for word in word_list:
             if (len(word) == word_length):
@@ -69,10 +74,12 @@ class WordleGame:
 
     @staticmethod
     def choose_xletter_word(word_list: list[str]) -> str:
+        """Returns a random word from a list of words that contain x number of letters"""
         word: str = random.choice(word_list)
         return word
 
     def player_chose_word_length(self, word_length: int) -> None:
+        """Set the word length and generate a new word for the player to guess"""
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
@@ -82,13 +89,13 @@ class WordleGame:
         return
 
     def get_valid_words(self) -> list[str]:
+        """Returns a list of words that are valid for the current word length"""
         all_valid_words: list[str] = []
         for word in self.valid_word_list:
             if (len(word) != self.word_length):
                 continue
 
-            # TODO: word should not contain characters that are in self.incorrect_letters()
-
+            # Word should not contain characters that are in self.incorrect_letters()
             skip_loop: bool = False
             for i, character in enumerate(self.correctly_positioned_letters):
                 if (character is None):
@@ -111,6 +118,7 @@ class WordleGame:
         return all_valid_words
 
     def generate_hint(self) -> None:
+        """Generates a hint for the player. hint is a single character that has not already been guessed"""
         if (self.hint_used):
             # player has already used their hint
             return
@@ -119,12 +127,12 @@ class WordleGame:
         self.hint = character
         self.hint_used = True
         self.lives_left -= 1
-        self.previous_guesses.append(f">>>hint: {self.hint}")
         self.previous_clues.append([])
         self.correctly_guessed_letters.add(character)
         return
 
     def is_guess_valid(self, guess: str, start_time: float, end_time: float) -> bool:
+        """Returns True if the guess is valid. Checks for alphabetic characters, length, and guess time"""
         if (not guess.isalpha()):
             print("Your guess may only contain letters")
             return False
@@ -137,6 +145,7 @@ class WordleGame:
         return True
 
     def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
+        """Returns a list of feedback for a given guess"""
         feedback: list[str] = ['_'] * self.word_length
         if (invalid_guess == True):
             return feedback
@@ -163,6 +172,10 @@ class WordleGame:
         return feedback
 
     def process_guess(self, guess: str) -> int:
+        """Processes a guess and returns the outcome of the guess.
+        0 - incorrect guess
+        1 - correct guess
+        2 - error: must guess a valid word"""
         self.previous_guesses.append(guess)
         if (guess not in self.word_list):
             print(f"Incorrect! Must guess a valid word!")
@@ -181,6 +194,7 @@ class WordleGame:
 
     @staticmethod
     def clue_to_string(clue: list[str]) -> str:
+        """Returns a string representation of a clue"""
         string: str = ""
         for i, character in enumerate(clue):
             string += character
@@ -189,6 +203,7 @@ class WordleGame:
         return string
 
     def print_previous_clues(self) -> None:
+        """Prints all previous clues"""
         for i, guess in enumerate(self.previous_guesses):
             clue: list[str] = self.previous_clues[i]
             clue_string: str = self.clue_to_string(clue)
@@ -203,14 +218,16 @@ class WordleGame:
         return
 
     def create_round_display(self) -> None:
+        """Creates a display of the current round"""
         # Called after each time console is cleared
         print(f"Lives Left: {self.lives_left}")
         print(f"Incorrect letters: {self.incorrect_letters}")
-        print(f"word to guess: {self.word}") # TODO: REMOVE THIS LATER
+        print(f"word to guess: {self.word}") # TODO: for debugging use
         self.print_previous_clues()
         return
             
     def show_game_end_screen(self, game_won: bool, game_time: float = None) -> None:
+        """Creates the end screen of the game"""
         if (game_won):
             print(f"Congratulations, you've guessed the correct answer - {self.word} in {game_time:.2f} seconds!")
             # print(f"It took {self.max_attempts} attempts, {self.lives_left} lives remaining")
@@ -225,19 +242,22 @@ class WordleGame:
 
     @staticmethod
     def read_winners_file() -> list[str]:
+        """Returns a list of all winners from the winners.txt file"""
         with open("winners.txt", 'r') as file:
             winners_file = file.read()
             winners_list = winners_file.split("\n")
         return winners_list
 
     def update_winners_file(self, game_time: float) -> None:
+        """Adds the current player to the winners.txt file"""
         with open("winners.txt", 'a') as file:
             file.write(f"{self.player_name} - {game_time:.2f}\n")
         return
 
     def play_game(self) -> None:
-        # start of game
+        """Main game loop"""
         self.clear_console()
+
         print("Welcome to Wordle!")
         name: str = input("What is your name? ")
         self.player_name = name
@@ -247,6 +267,8 @@ class WordleGame:
             for winner in previous_winners:
                 print(winner)
         print("")
+
+        # user must specify a word length
         word_length_selected: bool = False
         while (not word_length_selected):
             word_length: str = input("Enter the word length you would like to play (4, 5, 6): ")
@@ -256,6 +278,8 @@ class WordleGame:
             else:
                 print("Invalid word length. Please enter a valid word length.")
         game_start_time: float = time.time()
+
+        # user gets WordleGame.lives_left amount of guesses
         while self.lives_left > 0:
             guess_start_time: float = time.time()
             if (len(self.valid_words) > 0):
@@ -266,7 +290,10 @@ class WordleGame:
             if (not self.hint_used):
                 print("Input \"hint()\" to reveal a letter. You can only use one hint and will lose a life.")
             guess = input(f"You have 30 seconds to guess a {len(self.word)} letter word:").lower()
+            guess_end_time: float = time.time()
+
             if guess.lower() == "exit()":
+                # TODO: should this stop the game completely or restart the game?
                 self.play_game()
             elif guess.lower() == "hint()":
                 self.generate_hint()
@@ -277,10 +304,9 @@ class WordleGame:
                 self.valid_words = self.get_valid_words()
                 self.clear_console()
                 continue
-            guess_end_time: float = time.time()
 
+            # check if user has made an invalid guess
             if (not self.is_guess_valid(guess, guess_start_time, guess_end_time)):
-                print("not valid")
                 self.lives_left = self.lives_left - 1
                 self.clear_console()
                 self.create_round_display()
