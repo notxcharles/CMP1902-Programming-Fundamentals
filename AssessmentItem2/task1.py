@@ -1,11 +1,13 @@
 def ask_user_for_positive_integer() -> None:
     while True:
         user_input = input("Enter a positive integer (or done) ")
+        print(f"{user_input=}")
         if (user_input.lower() == "done"):
             return 0
         
         try:
-            user_input_integer = int(user_input)  
+            user_input_integer = int(user_input)
+
         except ValueError as e:
             print("Not an integer- please try again")
             continue
@@ -16,14 +18,7 @@ def ask_user_for_positive_integer() -> None:
 
 
 def get_unique_integers(integer_list: list[int]) -> list[int]:
-    """Given a list, return just the unique elements
-
-    Args:
-        integer_list (list[int]): list of input integers to be sorted into a unique list
-
-    Returns:
-        list[int]: a unique list of integers
-    """
+    """Given a list, return just the unique elements"""
     # Sets only contain unique elements
     integer_set = set(integer_list)
     integer_list = list(integer_set)    
@@ -31,14 +26,8 @@ def get_unique_integers(integer_list: list[int]) -> list[int]:
 
 
 def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
-    """Given a list of numbers, return a new list of numbers that contains any duplicate integers
-
-    Args:
-        list_of_numbers (list[int]): list containing numbers 
-
-    Returns:
-        list[int]: list of duplicate integers
-    """
+    """Given a list of numbers, return a new list of numbers that contains any duplicate integers"""
+    # TODO: I could rewrite this to use a dictionary instead
     integer_quantity = {}
     for integer in list_of_numbers:
         if (integer not in integer_quantity):
@@ -55,14 +44,7 @@ def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
        
         
 def get_product_from_list(list_of_numbers: list[int]) -> int:
-    """Calculates and returns the product of a list of numbers
-
-    Args:
-        list_of_numbers (list[int]): list containing numbers whose product is desired
-
-    Returns:
-        int: returns product of a list of numbers
-    """
+    """Calculates and returns the product of a list of numbers"""
     product = 1
     for integer in list_of_numbers:
         product = product * integer
@@ -71,7 +53,6 @@ def get_product_from_list(list_of_numbers: list[int]) -> int:
 
 def get_range_from_list(list_of_numbers: list[int]) -> int:
     """Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range"""
-    # Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
     return list_of_numbers[len(list_of_numbers)-1] - list_of_numbers[0]
 
 
@@ -102,7 +83,7 @@ def get_variance_from_list(list_of_numbers: list[int]) -> float:
 
 
 def seperate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
-    """Seperates odd and even numbers into two lists, oddIntegers and evenIntegers"""
+    """Seperates odd and even numbers into two lists of odd Integers and even Integers"""
     odd_integers = []
     even_integers = []
     for num in list_of_numbers:
@@ -119,12 +100,17 @@ def seperate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], lis
 def main():
     integer_list = []
     while True:
-        userInteger = ask_user_for_positive_integer()
-        if (userInteger == 0) or (len(integer_list) == 0):
-            # User wants to see stats
-            break
-        integer_list.append(userInteger)
-        
+        user_integer = ask_user_for_positive_integer()
+        if (user_integer == 0):
+            if (len(integer_list) == 0):
+                # User hasn't entered a valid number, we can't see the stats yet
+                continue
+            else:
+                # User wants to see stats
+                break
+        integer_list.append(user_integer)
+
+    #
     unique_list = get_unique_integers(integer_list)
     duplicate_integers = get_duplicate_integers(integer_list)
     
