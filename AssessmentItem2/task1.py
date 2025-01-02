@@ -70,67 +70,39 @@ def get_product_from_list(list_of_numbers: list[int]) -> int:
 
 
 def get_range_from_list(list_of_numbers: list[int]) -> int:
-    """Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
-
-    Args:
-        list_of_numbers (list[int]): sorted list containing numbers (smallest number at index 0) whose range is desired
-
-    Returns:
-        int: range of the list. largest element - smallest element
-    """
+    """Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range"""
     # Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range
     return list_of_numbers[len(list_of_numbers)-1] - list_of_numbers[0]
 
 
 def get_sum_from_list(list_of_numbers: list[float]) -> float:
-    """Calculates the sum of a /listOfNumbers/
-
-    Args:
-        list_of_numbers (list[float]): list containing numbers whose sum is desired
-
-    Returns:
-        float: sum of the list
-    """
-    sum = 0
+    """Calculates the sum of a /listOfNumbers/"""
+    total_sum = 0
     for number in list_of_numbers:
-        sum = sum + number
-    return sum
+        total_sum = total_sum + number
+    return total_sum
 
 
 def get_variance_from_list(list_of_numbers: list[int]) -> float:
-    """Calculates the variance of the list of numbers provided
-
-    Args:
-        list_of_numbers (list[int]): list containing numbers whose variance is desired
-
-    Returns:
-        float: variance of the list
-    """
-    listLength = len(list_of_numbers)
-    if listLength == 0:
-        return listLength
+    """Calculates the variance of the list of numbers provided"""
+    list_length = len(list_of_numbers)
+    if list_length == 0:
+        return list_length
     
-    sum = get_sum_from_list(list_of_numbers)
-    mean = sum / listLength
+    total_sum = get_sum_from_list(list_of_numbers)
+    mean = total_sum / list_length
     
-    squaredDifferences = []
+    squared_differences = []
     for number in list_of_numbers:
-        squaredDifference = (number - mean) ** 2
-        squaredDifferences.append(squaredDifference)
+        squared_difference = (number - mean) ** 2
+        squared_differences.append(squared_difference)
         
-    variance = get_sum_from_list(squaredDifferences) / listLength
+    variance = get_sum_from_list(squared_differences) / list_length
     return variance
 
 
 def seperate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
-    """Seperates odd and even numbers into two lists, oddIntegers and evenIntegers
-
-    Args:
-        list_of_numbers (list[int]): presorted list of integers
-
-    Returns:
-        list[list[int], list[int]]: returns a list of two lists: [oddIntegers, evenIntegers]
-    """
+    """Seperates odd and even numbers into two lists, oddIntegers and evenIntegers"""
     odd_integers = []
     even_integers = []
     for num in list_of_numbers:
@@ -139,15 +111,16 @@ def seperate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], lis
         else:
             odd_integers.append(num)
 
-    seperate_lists = [odd_integers, even_integers]
-    return seperate_lists
+    odd_even_list = [odd_integers, even_integers]
+    type(odd_even_list)
+    return odd_even_list
 
 
 def main():
     integer_list = []
     while True:
         userInteger = ask_user_for_positive_integer()
-        if userInteger == 0:
+        if (userInteger == 0) or (len(integer_list) == 0):
             # User wants to see stats
             break
         integer_list.append(userInteger)
@@ -161,6 +134,10 @@ def main():
     variance = get_variance_from_list(unique_list)
     
     odd_numbers, even_numbers = seperate_odd_even_numbers(unique_list)
+
+    print("Results:")
+    duplicates = len(integer_list) - len(unique_list)
+    print(f"{unique_list} (removed {duplicates} duplicates\n")
     if (len(even_numbers) == 0):
         print("No even numbers were provided.")
     if (len(odd_numbers) == 0):
