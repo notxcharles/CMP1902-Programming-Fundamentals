@@ -1,5 +1,5 @@
-Prompts the user to input only positive integer numbers at the terminal (numbers with decimals, negative numbers 
-or characters will not be accepted) 
+~~Prompts the user to input only positive integer numbers at the terminal (numbers with decimals, negative numbers 
+or characters will not be accepted)~~
 
 Assign those numbers to a list and removes any duplicate numbers and informs the user of the removed duplicates 
 

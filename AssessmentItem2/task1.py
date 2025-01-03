@@ -1,24 +1,20 @@
-def ask_user_for_positive_integer() -> None:
+def ask_user_for_positive_integer() -> int | None:
     while True:
         user_input = input("Enter a positive integer (or done) ")
         print(f"{user_input=}")
         if (user_input.lower() == "done"):
             return 0
-        
-        try:
-            user_input_integer = int(user_input)
-
-        except ValueError as e:
-            print("Not an integer- please try again")
+        if not user_input.isdigit():
+            print("Only positive integers are allowed!", "Numbers with decimals, negative numbers or characters will not be accepted")
             continue
-                    
-        if (user_input_integer > 0):
-            return user_input_integer
+        if (int(user_input) > 0):
+            return int(user_input)
         print("Input was incorrect")
+    return
 
 
 def get_unique_integers(integer_list: list[int]) -> list[int]:
-    """Given a list, return just the unique elements"""
+    """Given a list, return a list of the unique elements"""
     # Sets only contain unique elements
     integer_set = set(integer_list)
     integer_list = list(integer_set)    
@@ -82,8 +78,8 @@ def get_variance_from_list(list_of_numbers: list[int]) -> float:
     return variance
 
 
-def seperate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
-    """Seperates odd and even numbers into two lists of odd Integers and even Integers"""
+def separate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
+    """Separates odd and even numbers into two lists of odd Integers and even Integers"""
     odd_integers = []
     even_integers = []
     for num in list_of_numbers:
@@ -92,8 +88,7 @@ def seperate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], lis
         else:
             odd_integers.append(num)
 
-    odd_even_list = [odd_integers, even_integers]
-    type(odd_even_list)
+    odd_even_list = [[odd_integers], [even_integers]]
     return odd_even_list
 
 
@@ -119,7 +114,7 @@ def main():
     range = get_range_from_list(unique_list)
     variance = get_variance_from_list(unique_list)
     
-    odd_numbers, even_numbers = seperate_odd_even_numbers(unique_list)
+    odd_numbers, even_numbers = separate_odd_even_numbers(unique_list)
 
     print("Results:")
     duplicates = len(integer_list) - len(unique_list)
