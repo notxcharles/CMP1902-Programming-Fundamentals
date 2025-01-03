@@ -1,7 +1,7 @@
 ~~Prompts the user to input only positive integer numbers at the terminal (numbers with decimals, negative numbers 
 or characters will not be accepted)~~
 
-Assign those numbers to a list and removes any duplicate numbers and informs the user of the removed duplicates 
+~~Assign those numbers to a list and removes any duplicate numbers and informs the user of the removed duplicates~~
 
 Counts the number of unique numbers in the list. 
 

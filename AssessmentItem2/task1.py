@@ -23,8 +23,7 @@ def get_unique_integers(integer_list: list[int]) -> list[int]:
 
 def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
     """Given a list of numbers, return a new list of numbers that contains any duplicate integers"""
-    # TODO: I could rewrite this to use a dictionary instead
-    integer_quantity = {}
+    integer_quantity = dict()
     for integer in list_of_numbers:
         if (integer not in integer_quantity):
             integer_quantity[integer] = 1
@@ -33,7 +32,7 @@ def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
         
     duplicate_integers = []
     for integer in integer_quantity:
-        if (integer_quantity[integer] != 1):
+        if (integer_quantity[integer] > 1):
             duplicate_integers.append(integer)
             
     return duplicate_integers
@@ -95,20 +94,29 @@ def separate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], lis
 def main():
     integer_list = []
     while True:
+        # Prompts the user to input only positive integer numbers
+        # User can input 'done' to view statistics (provided that they have input a number)
         user_integer = ask_user_for_positive_integer()
         if (user_integer == 0):
+            # User hasn't entered a valid number, we can't see the stats yet
             if (len(integer_list) == 0):
-                # User hasn't entered a valid number, we can't see the stats yet
                 continue
-            else:
-                # User wants to see stats
-                break
+            break
         integer_list.append(user_integer)
 
-    #
+
+
+    # Get unique and duplicate numbers
     unique_list = get_unique_integers(integer_list)
     duplicate_integers = get_duplicate_integers(integer_list)
-    
+
+    print("\nResults:")
+    duplicates = len(integer_list) - len(unique_list)
+    print(f"Removed {duplicates} duplicates!")
+    if (duplicates != 0):
+        print(f"Duplicate numbers: {duplicate_integers}")
+    print(f"Your unique list of numbers: {unique_list}")
+
     length = len(unique_list)
     product = get_product_from_list(integer_list)
     range = get_range_from_list(unique_list)
@@ -116,13 +124,6 @@ def main():
     
     odd_numbers, even_numbers = separate_odd_even_numbers(unique_list)
 
-    print("Results:")
-    duplicates = len(integer_list) - len(unique_list)
-    print(f"{unique_list} (removed {duplicates} duplicates\n")
-    if (len(even_numbers) == 0):
-        print("No even numbers were provided.")
-    if (len(odd_numbers) == 0):
-        print("No odd numbers were provided.")
 
     print(f"{integer_list=} | {duplicate_integers=} | {unique_list=}")
     print(f"{variance=}, {length=}, {product=}, {range=}")
