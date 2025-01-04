@@ -45,5 +45,5 @@ marked as * and + in subsequent guesses TODO: all of this
 that is part of the answer but will not provide its location. the player loses 
 one turn when using the hint TODO: all of this~~
 
-the player can ask for help with the vocabulary. this will provide all the words 
-in the dictionary that satisfy the clues TODO: all of this
+~~the player can ask for help with the vocabulary. this will provide all the words 
+in the dictionary that satisfy the clues~~
