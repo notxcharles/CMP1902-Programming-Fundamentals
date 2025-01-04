@@ -41,14 +41,16 @@ def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
 def get_product_from_list(list_of_numbers: list[int]) -> int:
     """Calculates and returns the product of a list of numbers"""
     product = 1
-    for integer in list_of_numbers:
-        product = product * integer
+    for number in list_of_numbers:
+        product = product * number
     return product
 
 
 def get_range_from_list(list_of_numbers: list[int]) -> int:
-    """Given a sorted list, with the smallest element at i=0 and largest element at i=len(list)-1, return the range"""
-    return list_of_numbers[len(list_of_numbers)-1] - list_of_numbers[0]
+    """Given a list, return the range, list[-1] - list[0]"""
+    sorted_set = set(list_of_numbers)
+    sorted_list = list(sorted_set)
+    return sorted_list[-1] - sorted_list[0]
 
 
 def get_sum_from_list(list_of_numbers: list[float]) -> float:
@@ -60,7 +62,7 @@ def get_sum_from_list(list_of_numbers: list[float]) -> float:
 
 
 def get_variance_from_list(list_of_numbers: list[int]) -> float:
-    """Calculates the variance of the list of numbers provided"""
+    """Calculates the variance of the /list_of_numbers/"""
     list_length = len(list_of_numbers)
     if list_length == 0:
         return list_length
@@ -72,12 +74,12 @@ def get_variance_from_list(list_of_numbers: list[int]) -> float:
     for number in list_of_numbers:
         squared_difference = (number - mean) ** 2
         squared_differences.append(squared_difference)
-        
+
     variance = get_sum_from_list(squared_differences) / list_length
     return variance
 
 
-def separate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
+def separate_odd_even_numbers(list_of_numbers: list[int]) -> [list[int], list[int]]:
     """Separates odd and even numbers into two lists of odd Integers and even Integers"""
     odd_integers = []
     even_integers = []
@@ -86,9 +88,7 @@ def separate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], lis
             even_integers.append(num)
         else:
             odd_integers.append(num)
-
-    odd_even_list = [[odd_integers], [even_integers]]
-    return odd_even_list
+    return odd_integers, even_integers
 
 
 def main():
@@ -104,8 +104,6 @@ def main():
             break
         integer_list.append(user_integer)
 
-
-
     # Get unique and duplicate numbers
     unique_list = get_unique_integers(integer_list)
     duplicate_integers = get_duplicate_integers(integer_list)
@@ -118,16 +116,20 @@ def main():
     print(f"Your unique list of numbers: {unique_list}")
 
     length = len(unique_list)
+    print(f"There are {length} of unique integers in the list!")
+
     product = get_product_from_list(integer_list)
-    range = get_range_from_list(unique_list)
+    print(f"The product of the list is {product}!")
+    list_range = get_range_from_list(unique_list)
+    print(f"The range of the list is {list_range}!")
     variance = get_variance_from_list(unique_list)
+    print(f"The variance of the list is {variance:.2f}!")
     
     odd_numbers, even_numbers = separate_odd_even_numbers(unique_list)
-
-
-    print(f"{integer_list=} | {duplicate_integers=} | {unique_list=}")
-    print(f"{variance=}, {length=}, {product=}, {range=}")
-    print(f"{odd_numbers=}, {even_numbers=}")
+    if (len(even_numbers) == 0):
+        print("No even numbers were provided!")
+    if (len(odd_numbers) == 0):
+        print("No even numbers were provided!")
     
     
 main()
