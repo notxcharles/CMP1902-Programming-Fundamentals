@@ -1,3 +1,22 @@
+# task2.py - Charles Frederick Harrison 25320877
+# Variant of the Wordle game
+# This script will:
+# > Randomly select one 5-letter word from dictionary.txt
+# > During each turn the player provides a guess. Check if it is a real word, if not, lose a life (turn)
+# > After each guess, provide a clue.
+#   clue: * - letter and correct position, + - letter correct, _ letter not in answer
+# > Multiple instances of the same letter will e assigned with either * or + only if the letter
+#   appears multiple times
+# > Player has the option to give up at any time
+# > Player has 6 turns/lives. If the correct answer is found they win, otherwise they lose
+# Desired Features:
+# > Asks for an alias, lets users see past fasted times. Users time is also saved to file
+# > After each turn, the code provides a list of all invalid characters that the user has used
+# > Player is given 30 seconds to guess a word
+# > Erroneous input is handled correctly
+# Advanced Features:
+# > Player has the option to use a hint once
+# > Player can ask for help with the vocabulary
 import time
 import random
 
@@ -31,7 +50,7 @@ class WordleGame:
 
     @staticmethod
     def clear_console() -> None:
-        """Clears the console screen"""
+        """Clears the console/terminal"""
         print(chr(27) + "[2J")
         return
 
@@ -259,7 +278,6 @@ class WordleGame:
         print("Thanks for playing!")
         return exit()
 
-
     def play_game(self) -> None:
         """Main game loop"""
         self.clear_console()
@@ -310,8 +328,8 @@ class WordleGame:
                 self.clear_console()
                 continue
 
-            # check if user has made an invalid guess
             if (not self.is_guess_valid(guess, guess_start_time, guess_end_time)):
+                # User has made an invalid guess
                 self.lives_left = self.lives_left - 1
                 self.clear_console()
                 self.create_round_display()
@@ -323,7 +341,7 @@ class WordleGame:
 
             outcome = self.process_guess(guess)
             if (outcome == 1):
-                # player has guessed the correct answer
+                # Player has guessed the correct answer
                 self.clear_console()
                 game_end_time = time.time()
                 game_time = (game_end_time - game_start_time)
@@ -331,12 +349,11 @@ class WordleGame:
                 self.update_winners_file(game_time)
                 return
             elif (outcome == 0):
-                # player has made an incorrect guess
+                # Player has made an incorrect guess
                 self.lives_left = self.lives_left - 1
             elif (outcome == 2):
-                # must guess a word
+                # Must guess a valid word
                 self.lives_left = self.lives_left - 1
-            # time.sleep(2)
             self.clear_console()
             self.create_round_display()
 
