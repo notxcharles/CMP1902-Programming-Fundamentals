@@ -103,6 +103,7 @@ class WordleGame:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
+        self.word = "alley" # for debugging
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
         self.correctly_positioned_letters = [None] * self.word_length
@@ -120,9 +121,8 @@ class WordleGame:
             for i, character in enumerate(self.correctly_positioned_letters):
                 if (character is None):
                     continue
-                if (character != word[i]):
+                elif (character != word[i]):
                     # we can eliminate that word from the word list
-                    # TODO: convert to if elif else
                     skip_loop = True
                     break
             if (skip_loop):
@@ -177,7 +177,6 @@ class WordleGame:
             if (guess[i] == self.word[i]):
                 feedback[i] = '*'
                 self.correctly_positioned_letters[i] = guess[i]
-                self.character_frequency[character] -= 1
                 character_frequency_guess[character] -= 1
 
         for i, character in enumerate(guess):
@@ -186,14 +185,14 @@ class WordleGame:
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
                 continue
-            if (feedback[i] != '*' and character in self.word and self.character_frequency[character] != 0):
+            if (feedback[i] != '*' and character in self.word and character_frequency_guess[character] > 0):
                 # TODO: i dont think i need character in word anymore now that i use continue
                 # TODO: this should probably be an if elif else loop for readability
                 feedback[i] = '+'
-                self.character_frequency[character] -= 1
+                character_frequency_guess[character] -= 1
                 continue
             if (character in self.word):
-                # TODO: check if this is needed
+                # c_g_l keeps a set of characters that have been correctly guessed
                 self.correctly_guessed_letters.add(character)
         return feedback
 
