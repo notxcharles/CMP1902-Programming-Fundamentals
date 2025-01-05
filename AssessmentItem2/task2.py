@@ -39,9 +39,7 @@ class WordleGame:
         self.correctly_guessed_letters = set()
         # correctly_positioned_letters will keep track of any letters that the
         # user has guessed that are in the correct positions
-        # eg: where word = "hello"
-        #         guess1 = "homes
-        #          c_p_l = [h____]
+        # this is needed for vocab()
         self.correctly_positioned_letters = [None] * self.word_length
         self.valid_words = []
         self.hint_used = False
@@ -174,23 +172,20 @@ class WordleGame:
 
         character_frequency_guess = self.get_character_frequency(guess)
         for i, character in enumerate(guess):
-            if (guess[i] == self.word[i]):
-                feedback[i] = '*'
-                self.correctly_positioned_letters[i] = guess[i]
-                character_frequency_guess[character] -= 1
-
-        for i, character in enumerate(guess):
-            # #TODO: this can probably be simplified down into one loop
             if (character not in self.word):
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
-                continue
-            if (feedback[i] != '*' and character in self.word and character_frequency_guess[character] > 0):
+            elif (guess[i] == self.word[i]):
+                feedback[i] = '*'
+                self.correctly_positioned_letters[i] = guess[i]
+                character_frequency_guess[character] -= 1
+                self.correctly_guessed_letters.add(character)
+            elif (feedback[i] != '*' and character in self.word and character_frequency_guess[character] > 0):
                 # TODO: i dont think i need character in word anymore now that i use continue
                 # TODO: this should probably be an if elif else loop for readability
                 feedback[i] = '+'
                 character_frequency_guess[character] -= 1
-                continue
+                self.correctly_guessed_letters.add(character)
             if (character in self.word):
                 # c_g_l keeps a set of characters that have been correctly guessed
                 self.correctly_guessed_letters.add(character)
