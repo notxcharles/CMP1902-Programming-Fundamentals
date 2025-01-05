@@ -77,6 +77,7 @@ class WordleGame:
     @staticmethod
     def get_character_frequency(word: str) -> dict[str, int]:
         """Returns a dictionary of the frequency of each character in a word"""
+        # TODO: This could be further optimised to a list of length 26
         frequency = dict()
         for character in word:
             frequency[character] = frequency.get(character, 0) + 1
@@ -120,8 +121,9 @@ class WordleGame:
                 if (character is None):
                     continue
                 if (character != word[i]):
-                    skip_loop = True
                     # we can eliminate that word from the word list
+                    # TODO: convert to if elif else
+                    skip_loop = True
                     break
             if (skip_loop):
                 continue
@@ -140,7 +142,6 @@ class WordleGame:
         """Generates a hint for the player.The hint is a
         single character that has not already been guessed"""
         if (self.hint_used):
-            # player has already used their hint
             return
         unguessed_characters = self.characters - self.correctly_guessed_letters
         character = random.choice(list(unguessed_characters))
@@ -180,15 +181,19 @@ class WordleGame:
                 character_frequency_guess[character] -= 1
 
         for i, character in enumerate(guess):
+            # #TODO: this can probably be simplified down into one loop
             if (character not in self.word):
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
                 continue
             if (feedback[i] != '*' and character in self.word and self.character_frequency[character] != 0):
+                # TODO: i dont think i need character in word anymore now that i use continue
+                # TODO: this should probably be an if elif else loop for readability
                 feedback[i] = '+'
                 self.character_frequency[character] -= 1
                 continue
             if (character in self.word):
+                # TODO: check if this is needed
                 self.correctly_guessed_letters.add(character)
         return feedback
 
