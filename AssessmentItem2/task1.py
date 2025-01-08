@@ -61,9 +61,8 @@ def get_product_from_list(list_of_numbers: list[int]) -> int:
 
 def get_range_from_list(list_of_numbers: list[int]) -> int:
     """Given a list, return the range, list[-1] - list[0]"""
-    sorted_set = set(list_of_numbers)
-    sorted_list = list(sorted_set)
-    return sorted_list[-1] - sorted_list[0]
+    list_of_numbers.sort()
+    return list_of_numbers[-1] - list_of_numbers[0]
 
 
 def get_sum_from_list(list_of_numbers: list[float]) -> float:
@@ -122,14 +121,14 @@ def main():
     duplicate_integers = get_duplicate_integers(integer_list)
 
     print("\nResults:")
-    duplicates = len(integer_list) - len(unique_list)
-    print(f"Removed {duplicates} duplicates!")
-    if (duplicates != 0):
+    number_of_duplicates = len(integer_list) - len(unique_list)
+    print(f"Removed {number_of_duplicates} duplicates!")
+    if (number_of_duplicates != 0):
         print(f"Duplicate numbers: {duplicate_integers}")
     print(f"Your unique list of numbers: {unique_list}")
 
-    length = len(unique_list)
-    print(f"There are {length} of unique integers in the list!")
+    list_length = len(unique_list)
+    print(f"There are {list_length} of unique integers in the list!")
 
     product = get_product_from_list(unique_list)
     print(f"The product of the unique list is {product}!")
@@ -142,12 +141,12 @@ def main():
     if (len(even_numbers) == 0):
         print("No even numbers were provided!")
     else:
-        print(f"Even numbers: {even_numbers}")
+        print(f"Even numbers in the unique list: {even_numbers}")
 
     if (len(odd_numbers) == 0):
         print("No even numbers were provided!")
     else:
-        print(f"Even numbers: {odd_numbers}")
+        print(f"Even numbers in the unique list: {odd_numbers}")
     
     
 main()
