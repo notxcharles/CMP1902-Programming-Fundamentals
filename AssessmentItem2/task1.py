@@ -91,7 +91,7 @@ def get_variance_from_list(list_of_numbers: list[int]) -> float:
     return variance
 
 
-def separate_odd_even_numbers(list_of_numbers: list[int]) -> [list[int], list[int]]:
+def separate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
     """Separates odd and even numbers into two lists of odd Integers and even Integers"""
     odd_integers = []
     even_integers = []
