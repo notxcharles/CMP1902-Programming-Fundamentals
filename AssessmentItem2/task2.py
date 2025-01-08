@@ -44,7 +44,8 @@ class WordleGame:
         self.valid_words = []
         self.hint_used = False
         self.hint = None
-        self.play_game()
+        self.hard_mode = False
+        self. play_game()
 
     @staticmethod
     def clear_console() -> None:
@@ -300,7 +301,16 @@ class WordleGame:
                 word_length_selected = True
             else:
                 print("Invalid word length. Please enter a valid word length.")
+
+        # user must specify whether they wish to play hard mode
+        hard_mode_input = input("Do you want to play hard mode? y/n")
+        if (word_length.isalpha() and hard_mode_input == "y"):
+            print("Playing in hard mode")
+            self.hard_mode = True
+        else:
+            print("Playing in easy mode")
         game_start_time = time.time()
+        print("")
 
         # user gets WordleGame.lives_left amount of guesses
         while self.lives_left > 0:
