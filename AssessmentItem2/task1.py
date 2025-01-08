@@ -131,18 +131,23 @@ def main():
     length = len(unique_list)
     print(f"There are {length} of unique integers in the list!")
 
-    product = get_product_from_list(integer_list)
-    print(f"The product of the list is {product}!")
+    product = get_product_from_list(unique_list)
+    print(f"The product of the unique list is {product}!")
     list_range = get_range_from_list(unique_list)
-    print(f"The range of the list is {list_range}!")
+    print(f"The range of the unique list is {list_range}!")
     variance = get_variance_from_list(unique_list)
-    print(f"The variance of the list is {variance:.2f}!")
+    print(f"The variance of unique the list is {variance:.2f}!")
     
     odd_numbers, even_numbers = separate_odd_even_numbers(unique_list)
     if (len(even_numbers) == 0):
         print("No even numbers were provided!")
+    else:
+        print(f"Even numbers: {even_numbers}")
+
     if (len(odd_numbers) == 0):
         print("No even numbers were provided!")
+    else:
+        print(f"Even numbers: {odd_numbers}")
     
     
 main()
