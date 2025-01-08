@@ -16,8 +16,8 @@ def ask_user_for_positive_integer() -> int | None:
 
 def get_unique_integers(integer_list: list[int]) -> list[int]:
     """Given a list, return a list of the unique elements"""
-    # Sets only contain unique elements
     integer_frequency = dict()
+    # Integer frequency dictionary, capturing the number of occurences for each integer
     for integer in integer_list:
         if (integer not in integer_frequency):
             integer_frequency[integer] = 1
@@ -25,6 +25,7 @@ def get_unique_integers(integer_list: list[int]) -> list[int]:
         integer_frequency[integer] += 1
     
     unique_integers = []
+    # All unique integers make up the keys of the dictionary
     for key in integer_frequency.keys():
         unique_integers.append(key)
 
@@ -33,16 +34,18 @@ def get_unique_integers(integer_list: list[int]) -> list[int]:
 
 def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
     """Given a list of numbers, return a new list of numbers that contains any duplicate integers"""
-    integer_quantity = dict()
+    integer_frequency = dict()
+    # Integer frequency dictionary, capturing the number of occurences for each integer
     for integer in list_of_numbers:
-        if (integer not in integer_quantity):
-            integer_quantity[integer] = 1
+        if (integer not in integer_frequency):
+            integer_frequency[integer] = 1
             continue
-        integer_quantity[integer] += 1
-        
+        integer_frequency[integer] += 1
+    
     duplicate_integers = []
-    for integer in integer_quantity:
-        if (integer_quantity[integer] > 1):
+    # If the frequency of an integer is more than 1, it must be a duplicate
+    for integer in integer_frequency:
+        if (integer_frequency[integer] > 1):
             duplicate_integers.append(integer)
             
     return duplicate_integers
