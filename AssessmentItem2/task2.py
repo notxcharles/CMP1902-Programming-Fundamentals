@@ -159,11 +159,14 @@ class WordleGame:
             if (character not in guess):
                 return False
         # Check that the guessed character is in a previously guessed correct position
-        for i, character in enumerate(guess):
-            if (self.correctly_positioned_letters[i] == None):
-                continue
-            if (character != self.correctly_positioned_letters[i]):
-                return False
+        # "The hard mode requires players to include letters marked as 
+        # * and + in subsequent guesses" does not mean that previously guessed characters
+        # must be in the correct position
+        # for i, character in enumerate(guess):
+        #     if (self.correctly_positioned_letters[i] == None):
+        #         continue
+        #     if (character != self.correctly_positioned_letters[i]):
+        #         return False
         
         return True
 
