@@ -199,13 +199,13 @@ class WordleGame:
             elif (guess[i] == self.word[i]):
                 feedback[i] = '*'
                 self.correctly_positioned_letters[i] = guess[i]
-                character_frequency_guess[character] -= 1
+                self.character_frequency[character] -= 1
                 self.correctly_guessed_letters.add(character)
-            elif (feedback[i] != '*' and character in self.word and character_frequency_guess[character] > 0):
+            elif (feedback[i] != '*' and character in self.word and self.character_frequency[character] > 0):
                 # TODO: i dont think i need character in word anymore now that i use continue
                 # TODO: this should probably be an if elif else loop for readability
                 feedback[i] = '+'
-                character_frequency_guess[character] -= 1
+                self.character_frequency[character] -= 1
                 self.correctly_guessed_letters.add(character)
             if (character in self.word):
                 # c_g_l keeps a set of characters that have been correctly guessed
