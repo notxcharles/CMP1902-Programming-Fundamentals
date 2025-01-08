@@ -184,7 +184,7 @@ class WordleGame:
             return False
         if (self.hard_mode):
             if (not self.is_hard_mode_guess_valid(guess)):
-                print("Hard mode is enabled! You must include letters marked as * and + in")
+                print("Hard mode is enabled! You must include letters marked as * and + in previous answers!")
                 return False
         return True
 
@@ -195,6 +195,7 @@ class WordleGame:
             return feedback
 
         character_frequency_guess = self.get_character_frequency(guess)
+        character_frequency_copy = self.get_character_frequency(self.word)
         for i, character in enumerate(guess):
             if (character not in self.word):
                 feedback[i] = '_'
@@ -202,13 +203,13 @@ class WordleGame:
             elif (guess[i] == self.word[i]):
                 feedback[i] = '*'
                 self.correctly_positioned_letters[i] = guess[i]
-                self.character_frequency[character] -= 1
+                character_frequency_copy[character] -= 1
                 self.correctly_guessed_letters.add(character)
-            elif (feedback[i] != '*' and character in self.word and self.character_frequency[character] > 0):
+            elif (feedback[i] != '*' and character in self.word and character_frequency_copy[character] > 0):
                 # TODO: i dont think i need character in word anymore now that i use continue
                 # TODO: this should probably be an if elif else loop for readability
                 feedback[i] = '+'
-                self.character_frequency[character] -= 1
+                character_frequency_copy[character] -= 1
                 self.correctly_guessed_letters.add(character)
             if (character in self.word):
                 # c_g_l keeps a set of characters that have been correctly guessed
@@ -256,7 +257,8 @@ class WordleGame:
                 print(f"Turn {i + 1}/{self.max_attempts}: Hint-  {guess.split(" ")[1]}")
             elif (guess.split(" ")[0] == ">>>invalidguess:"):
                 if (self.hard_mode):
-                    print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]} - Hard mode is enabled! You must include letters marked as * and + in")
+                    print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}",
+                         "- Hard mode is enabled! You must include letters marked as * and + in previous")
                 else:
                     print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}")
             else:
