@@ -102,7 +102,7 @@ class WordleGame:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
-        self.word = "alley" # for debugging
+        self.word = "ogre" # DEBUGGING
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
         self.correctly_positioned_letters = [None] * self.word_length
@@ -150,6 +150,22 @@ class WordleGame:
         self.previous_clues.append([])
         self.correctly_guessed_letters.add(character)
         return
+    
+    def is_hard_mode_guess_valid(self, guess: str):
+        """Returns true if the guess is valid with hard_mode rules"""
+        if (len(self.correctly_guessed_letters) == 0):
+            return True
+        for character in self.correctly_guessed_letters:
+            if (character not in guess):
+                return False
+        # Check that the guessed character is in a previously guessed correct position
+        for i, character in enumerate(guess):
+            if (self.correctly_positioned_letters[i] == None):
+                continue
+            if (character != self.correctly_positioned_letters[i]):
+                return False
+        
+        return True
 
     def is_guess_valid(self, guess: str, start_time: float, end_time: float) -> bool:
         """Returns True if the guess is valid. Checks for
@@ -163,6 +179,10 @@ class WordleGame:
         if (end_time - start_time > self.GUESSTIME):
             print(f"You must guess within {self.GUESSTIME} seconds")
             return False
+        if (self.hard_mode):
+            if (not self.is_hard_mode_guess_valid(guess)):
+                print("Hard mode is enabled! You must include letters marked as * and + in")
+                return False
         return True
 
     def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
@@ -303,8 +323,8 @@ class WordleGame:
                 print("Invalid word length. Please enter a valid word length.")
 
         # user must specify whether they wish to play hard mode
-        hard_mode_input = input("Do you want to play hard mode? y/n")
-        if (word_length.isalpha() and hard_mode_input == "y"):
+        hard_mode_input = input("Do you want to play hard mode? (y/n) ")
+        if (hard_mode_input.isalpha() and hard_mode_input == "y"):
             print("Playing in hard mode")
             self.hard_mode = True
         else:
@@ -367,6 +387,7 @@ class WordleGame:
             self.create_round_display()
 
         # Out of lives
+
         self.clear_console()
         self.show_game_end_screen(game_won=False)
         return
