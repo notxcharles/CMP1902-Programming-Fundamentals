@@ -17,9 +17,18 @@ def ask_user_for_positive_integer() -> int | None:
 def get_unique_integers(integer_list: list[int]) -> list[int]:
     """Given a list, return a list of the unique elements"""
     # Sets only contain unique elements
-    integer_set = set(integer_list)
-    integer_list = list(integer_set)    
-    return integer_list
+    integer_frequency = dict()
+    for integer in integer_list:
+        if (integer not in integer_frequency):
+            integer_frequency[integer] = 1
+            continue
+        integer_frequency[integer] += 1
+    
+    unique_integers = []
+    for key in integer_frequency.keys():
+        unique_integers.append(key)
+
+    return unique_integers
 
 
 def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
