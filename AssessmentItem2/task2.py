@@ -109,7 +109,7 @@ class WordleGame:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
-        # self.word = "knew" # DEBUGGING ONLY
+        # self.word = "brad" # DEBUGGING ONLY
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
         self.correctly_positioned_letters = [None] * self.word_length
@@ -391,9 +391,9 @@ class WordleGame:
                 # User has made an invalid guess
                 self.lives_left = self.lives_left - 1
                 self.clear_console()
-                self.create_round_display()
                 self.previous_guesses.append(f">>>invalidguess: {guess}")
                 self.previous_clues.append([])
+                self.create_round_display()
                 self.clear_console()
                 if (not self.lives_left > 0):
                     self.show_game_end_screen(game_won=False)
