@@ -67,11 +67,15 @@ class WordleGame:
 
     def get_word_list(self) -> list[str]:
         """Returns a list of all words in the dictionary"""
-        with open("dictionary.txt", 'r') as file:
-            word_file = file.read()
-            all_words_list = word_file.split()
-        all_words_list = self.clean_word_list(all_words_list)
-        return all_words_list
+        try:
+            with open("dictionary.txt", 'r') as file:
+                word_file = file.read()
+                all_words_list = word_file.split()
+            all_words_list = self.clean_word_list(all_words_list)
+            return all_words_list
+        except OSError:
+            print("Cannot open/access the file.")
+            exit()
 
     @staticmethod
     def get_character_frequency(word: str) -> dict[str, int]:
@@ -102,7 +106,7 @@ class WordleGame:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
-        self.word = "ogre" # DEBUGGING
+        # self.word = "ogre" # DEBUGGING
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
         self.correctly_positioned_letters = [None] * self.word_length
@@ -194,7 +198,6 @@ class WordleGame:
         if (invalid_guess == True):
             return feedback
 
-        character_frequency_guess = self.get_character_frequency(guess)
         character_frequency_copy = self.get_character_frequency(self.word)
         for i, character in enumerate(guess):
             if (character not in self.word):
