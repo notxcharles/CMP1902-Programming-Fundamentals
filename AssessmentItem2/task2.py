@@ -386,7 +386,8 @@ class WordleGame:
                 self.previous_guesses.append(f">>>invalidguess: {guess}")
                 self.previous_clues.append([])
                 self.clear_console()
-                self.show_game_end_screen(game_won=False)
+                if (not self.lives_left > 0):
+                    self.show_game_end_screen(game_won=False)
                 continue
 
             outcome = self.process_guess(guess)
