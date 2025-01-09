@@ -109,7 +109,7 @@ class WordleGame:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
-        # self.word = "scan" # DEBUGGING ONLY
+        # self.word = "knew" # DEBUGGING ONLY
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
         self.correctly_positioned_letters = [None] * self.word_length
@@ -123,6 +123,7 @@ class WordleGame:
                 continue
 
             # Word should not contain characters that are in self.incorrect_letters()
+            # using skip loop because we may need to continue through the original loop
             skip_loop = False
             for i, character in enumerate(self.correctly_positioned_letters):
                 if (character is None):
@@ -136,6 +137,13 @@ class WordleGame:
 
             for character in self.correctly_guessed_letters:
                 if character not in word:
+                    skip_loop = True
+                    break
+            if (skip_loop):
+                continue
+
+            for character in self.incorrect_letters:
+                if character in word:
                     skip_loop = True
                     break
             if (skip_loop):
@@ -218,6 +226,7 @@ class WordleGame:
             if (character not in self.word):
                 feedback[i] = '_'
                 self.incorrect_letters.add(character)
+
             elif (feedback[i] != '*' and character in self.word and character_frequency_copy[character] > 0):
                 # TODO: i dont think i need character in word anymore now that i use continue
                 # TODO: this should probably be an if elif else loop for readability
