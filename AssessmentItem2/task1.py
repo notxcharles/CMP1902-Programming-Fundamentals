@@ -5,12 +5,12 @@ def ask_user_for_positive_integer() -> int | None:
         print(f"{user_input=}")
         if (user_input.lower() == "done"):
             return 0
-        if not user_input.isdigit():
+        if (not user_input.isdigit()):
             print("Only positive integers are allowed!", "Numbers with decimals, negative numbers or characters will not be accepted")
             continue
         if (int(user_input) > 0):
             return int(user_input)
-        print("Input was incorrect")
+        print("Input was incorrect- try again")
     return
 
 
@@ -48,8 +48,8 @@ def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
             duplicate_integers.append(integer)
             
     return duplicate_integers
-       
-        
+
+
 def get_product_from_list(list_of_numbers: list[int]) -> int:
     """Calculates and returns the product of a list of numbers"""
     product = 1
@@ -141,11 +141,9 @@ def main():
         print("No even numbers were provided!")
     else:
         print(f"Even numbers in the unique list: {even_numbers}")
-
     if (len(odd_numbers) == 0):
         print("No even numbers were provided!")
     else:
         print(f"Even numbers in the unique list: {odd_numbers}")
-    
-    
+
 main()
