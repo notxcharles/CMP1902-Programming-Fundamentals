@@ -106,7 +106,10 @@ class WordleGame:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
-        # self.word = "ogre" # DEBUGGING
+        self.word = "scan" # DEBUGGING
+        # currently a bug
+        # Turn 5 / 6: + _ * _ arab
+        # expected:   _ _ * _
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
         self.correctly_positioned_letters = [None] * self.word_length
@@ -199,15 +202,22 @@ class WordleGame:
             return feedback
 
         character_frequency_copy = self.get_character_frequency(self.word)
+        # We need to iterate over the guess first to avoid any errors where there are multiple
+        # of the same character
+        # eg: word = scan
+        # guess =    arab
+        # expected   __*_
         for i, character in enumerate(guess):
-            if (character not in self.word):
-                feedback[i] = '_'
-                self.incorrect_letters.add(character)
-            elif (guess[i] == self.word[i]):
+            if (guess[i] == self.word[i]):
                 feedback[i] = '*'
                 self.correctly_positioned_letters[i] = guess[i]
                 character_frequency_copy[character] -= 1
                 self.correctly_guessed_letters.add(character)
+
+        for i, character in enumerate(guess):
+            if (character not in self.word):
+                feedback[i] = '_'
+                self.incorrect_letters.add(character)
             elif (feedback[i] != '*' and character in self.word and character_frequency_copy[character] > 0):
                 # TODO: i dont think i need character in word anymore now that i use continue
                 # TODO: this should probably be an if elif else loop for readability
