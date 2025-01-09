@@ -106,10 +106,7 @@ class WordleGame:
         self.word_length = word_length
         self.valid_word_list = self.get_xletter_words(self.word_list, self.word_length)
         self.word = self.choose_xletter_word(self.valid_word_list).lower()
-        self.word = "scan" # DEBUGGING
-        # currently a bug
-        # Turn 5 / 6: + _ * _ arab
-        # expected:   _ _ * _
+        # self.word = "scan" # DEBUGGING ONLY
         self.character_frequency = self.get_character_frequency(self.word)
         self.characters = set(self.word)
         self.correctly_positioned_letters = [None] * self.word_length
