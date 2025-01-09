@@ -17,7 +17,6 @@ def ask_user_for_positive_integer() -> int | None:
 def get_unique_integers(integer_list: list[int]) -> list[int]:
     """Given a list, return a list of the unique elements"""
     integer_frequency = dict()
-    # Integer frequency dictionary, capturing the number of occurences for each integer
     for integer in integer_list:
         if (integer not in integer_frequency):
             integer_frequency[integer] = 1
@@ -35,7 +34,7 @@ def get_unique_integers(integer_list: list[int]) -> list[int]:
 def get_duplicate_integers(list_of_numbers: list[int]) -> list[int]:
     """Given a list of numbers, return a new list of numbers that contains any duplicate integers"""
     integer_frequency = dict()
-    # Integer frequency dictionary, capturing the number of occurences for each integer
+    # Integer frequency dictionary
     for integer in list_of_numbers:
         if (integer not in integer_frequency):
             integer_frequency[integer] = 1
@@ -91,7 +90,7 @@ def get_variance_from_list(list_of_numbers: list[int]) -> float:
     return variance
 
 
-def separate_odd_even_numbers(list_of_numbers: list[int]) -> list[list[int], list[int]]:
+def separate_odd_even_numbers(list_of_numbers: list[int]) -> tuple[list[int], list[int]]:
     """Separates odd and even numbers into two lists of odd Integers and even Integers"""
     odd_integers = []
     even_integers = []
