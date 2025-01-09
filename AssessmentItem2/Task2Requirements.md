@@ -37,13 +37,13 @@ MUST HAVES:
 
 ADVANCED FEATURES:
 
-the player can select to play with four, five or six letter word and the
+~~the player can select to play with four, five or six letter word and the
 player has the option of hard mode. the hard mode requires players to include letters 
-marked as * and + in subsequent guesses TODO: all of this
+marked as * and + in subsequent guesses~~
 
 ~~the player has the option to use a hint once. this hint will provide a letter 
 that is part of the answer but will not provide its location. the player loses 
-one turn when using the hint TODO: all of this~~
+one turn when using the hint~~
 
 ~~the player can ask for help with the vocabulary. this will provide all the words 
 in the dictionary that satisfy the clues~~

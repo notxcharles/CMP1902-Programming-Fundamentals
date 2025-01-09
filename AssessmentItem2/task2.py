@@ -15,6 +15,9 @@
 # > Player is given 30 seconds to guess a word
 # > Erroneous input is handled correctly
 # Advanced Features:
+# >the player can select to play with four, five or six letter word and the
+#  player has the option of hard mode. the hard mode requires players to include letters
+#  marked as * and + in subsequent guesses
 # > Player has the option to use a hint once
 # > Player can ask for help with the vocabulary
 import time
@@ -171,7 +174,7 @@ class WordleGame:
         #         continue
         #     if (character != self.correctly_positioned_letters[i]):
         #         return False
-        
+
         return True
 
     def is_guess_valid(self, guess: str, start_time: float, end_time: float) -> bool:
