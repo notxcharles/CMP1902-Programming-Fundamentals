@@ -185,22 +185,23 @@ class WordleGame:
 
         return True
 
-    def is_guess_valid(self, guess: str, start_time: float, end_time: float) -> bool:
-        """Returns True if the guess is valid. Checks for
-        alphabetic characters, length, and guess time"""
+    def is_guess_valid(self, guess: str, start_time: float, end_time: float) -> int:
+        """Returns 1 if the guess is valid. Checks for alphabetic
+        characters, length, guess time, and hard mode. If the guess
+        is not valid, return a value from -3 to 0"""
         if (not guess.isalpha()):
             print("Your guess may only contain letters")
-            return False
+            return -3
         if (len(guess) != self.word_length):
             print(f"You must guess a {self.word_length} letter word")
-            return False
+            return -2
         if (end_time - start_time > self.GUESSTIME):
             print(f"You must guess within {self.GUESSTIME} seconds")
-            return False
+            return -1
         if (self.hard_mode):
             if (not self.is_hard_mode_guess_valid(guess)):
                 print("Hard mode is enabled! You must include letters marked as * and + in previous answers!")
-                return False
+                return 0
         return True
 
     def create_guess_feedback(self, guess: str, invalid_guess: bool = False) -> list[str]:
@@ -277,12 +278,20 @@ class WordleGame:
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   {guess}")
             elif (guess.split(" ")[0] == ">>>hint:"):
                 print(f"Turn {i + 1}/{self.max_attempts}: Hint-  {guess.split(" ")[1]}")
-            elif (guess.split(" ")[0] == ">>>invalidguess:"):
-                if (self.hard_mode):
+            elif (guess.split(" ")[0][0:15] == ">>>invalidguess"):
+                invalid_guess_type = guess.split(" ")[0][16:]
+                if invalid_guess_type == "hard:":
                     print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}",
                          "- Hard mode is enabled! You must include letters marked as * and + in previous")
-                else:
-                    print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}")
+                elif invalid_guess_type == "time:":
+                    print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}",
+                         f"- You must guess within {self.GUESSTIME} seconds")
+                elif invalid_guess_type == "length:":
+                    print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}",
+                          f"- The guess must be {self.word_length} letters long")
+                elif invalid_guess_type == "letters:":
+                    print(f"Turn {i + 1}/{self.max_attempts}: invalid guess: {guess.split(" ")[1]}",
+                          f"- Your guess must only contain letters")
             else:
                 print(f"Turn {i + 1}/{self.max_attempts}: {clue_string}   invalid word: {guess}")
         return
@@ -387,11 +396,20 @@ class WordleGame:
                 self.clear_console()
                 continue
 
-            if (not self.is_guess_valid(guess, guess_start_time, guess_end_time)):
+            guess_validity = self.is_guess_valid(guess, guess_start_time, guess_end_time)
+            if (guess_validity != 1):
                 # User has made an invalid guess
                 self.lives_left = self.lives_left - 1
                 self.clear_console()
-                self.previous_guesses.append(f">>>invalidguess: {guess}")
+                # Custom feedback
+                if (guess_validity == 0):
+                    self.previous_guesses.append(f">>>invalidguess_hard: {guess}")
+                elif (guess_validity == -1):
+                    self.previous_guesses.append(f">>>invalidguess_time: {guess}")
+                elif (guess_validity == -2):
+                    self.previous_guesses.append(f">>>invalidguess_length: {guess}")
+                elif (guess_validity == -3):
+                    self.previous_guesses.append(f">>>invalidguess_letters: {guess}")
                 self.previous_clues.append([])
                 self.create_round_display()
                 self.clear_console()
