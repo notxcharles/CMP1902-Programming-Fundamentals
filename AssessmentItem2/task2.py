@@ -363,7 +363,7 @@ class WordleGame:
 
         # user must specify whether they wish to play hard mode
         hard_mode_input = input("Do you want to play hard mode? (y/n) ")
-        if (hard_mode_input.isalpha() and hard_mode_input == "y"):
+        if (hard_mode_input == "y"):
             print("Playing in hard mode")
             self.hard_mode = True
         else:
